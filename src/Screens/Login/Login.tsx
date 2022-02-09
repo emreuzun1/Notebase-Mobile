@@ -22,6 +22,11 @@ interface ILogin {
   navigation: LoginProps;
 }
 
+/**
+ *
+ * @param navigation: Navigation object for navigate through screens.
+ * @returns a JSX Element that shows us the Login Screen.
+ */
 export const Login: FC<ILogin> = ({navigation}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -53,7 +58,7 @@ export const Login: FC<ILogin> = ({navigation}) => {
           Forgot password?
         </Text>
       </ForgotText>
-      <LoginButton>
+      <LoginButton onPress={() => navigation.navigate('Home')}>
         <LoginText>LOGIN</LoginText>
       </LoginButton>
       <RegisterButton onPress={() => navigation.navigate('Register')}>

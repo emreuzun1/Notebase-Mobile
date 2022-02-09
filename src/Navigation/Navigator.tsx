@@ -8,6 +8,7 @@ import {Home} from '../Screens/Home/Home';
 
 const MainStack = createNativeStackNavigator<RootStackParamList>();
 
+//Main Navigator for App
 const MainNavigator = () => {
   const {Navigator, Screen} = MainStack;
 
@@ -15,11 +16,20 @@ const MainNavigator = () => {
     <Navigator>
       <Screen name="Login" component={Login} />
       <Screen name="Register" component={Register} />
-      <Screen name="Home" component={Home} />
+      <Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: true,
+          headerBackVisible: false,
+          headerStyle: {backgroundColor: 'white'},
+        }}
+      />
     </Navigator>
   );
 };
 
+//Navigation Container for App
 export const Navigation = () => {
   return (
     <NavigationContainer>
