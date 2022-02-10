@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList, View} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {CourseCard} from '../../components/CourseCard/CourseCard';
 import {MaterialCard} from '../../components/MaterialCard/MaterialCard';
@@ -86,7 +85,6 @@ export const Home = () => {
         />
       </ListContainer>
       <ListContainer>
-        <Ionicons name="document-text" size={24} color="black" />
         <ListTitleContainer>
           <View>
             <ListTitle>Popular Materials</ListTitle>

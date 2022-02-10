@@ -25,6 +25,7 @@ export const MaterialCourseID = styled(Text)({
   fontSize: 12,
   fontWeight: '400',
   color: Colors.purple,
+  marginTop: 4,
 });
 
 export const MaterialTypeContainer = styled(View)({
@@ -34,6 +35,7 @@ export const MaterialTypeContainer = styled(View)({
   alignItems: 'center',
   padding: 4,
   borderRadius: 24,
+  marginTop: 4,
 });
 
 export const MaterialTypeText = styled(Text)({
