@@ -1,7 +1,9 @@
 import React, {FC} from 'react';
 import {KeyboardType, StyleProp, TextStyle, ViewStyle} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {Colors} from '../../constants/Colors';
-import {Container, Input, Label} from './CustomTextInput.styles';
+import {Container, Input} from './CustomTextInput.styles';
 
 interface TextInput {
   label?: string;
@@ -13,6 +15,7 @@ interface TextInput {
   maxLength?: number;
   keyboardType?: KeyboardType;
   autoCapitalize?: boolean;
+  icon?: string;
   onChange?: (val: any) => void;
 }
 
@@ -26,12 +29,18 @@ interface TextInput {
  * @param maxLength: It is a number that limits the length of the TextInput.
  * @param keyboardType: We can change the type of keyboard as we want. Ex : 'email'.
  * @param autoCapitalize: If you want to capitalize the value, you can set this true.
+ * @param icon: Name of the icon of the input
  * @param onChange: This is a function that takes value as a parameter.
  * @returns -> Custom TextInput
  */
 export const CustomTextInput: FC<TextInput> = props => {
   return (
     <Container>
+      {props.icon ? (
+        <Ionicons name={props.icon} size={20} color={Colors.white} />
+      ) : (
+        <></>
+      )}
       <Input
         placeholder={props.placeholder}
         placeholderTextColor={Colors.white}

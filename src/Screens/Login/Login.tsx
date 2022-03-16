@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState} from 'react';
-import {ImageBackground, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../Navigation/types';
 

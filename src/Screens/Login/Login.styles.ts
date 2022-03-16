@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
-import {SCREEN_WIDTH} from '../../constants/Screen';
 
 export const KeyboardAvoiding = styled(KeyboardAvoidingView)({
   flex: 1,
@@ -24,10 +23,6 @@ export const NotebaseIcon = styled(Image)({
   marginBottom: 28,
 });
 
-export const ForgotText = styled(TouchableOpacity)({
-  alignSelf: 'flex-end',
-});
-
 export const NewText = styled(Text)({
   fontSize: 24,
   fontFamily: 'Raleway-Regular',
@@ -39,6 +34,10 @@ export const LoginInfoText = styled(Text)({
   fontFamily: 'Raleway-Regular',
   color: Colors.white,
   marginTop: 8,
+});
+
+export const ForgotText = styled(TouchableOpacity)({
+  alignSelf: 'flex-end',
 });
 
 export const LoginButton = styled(TouchableOpacity)({

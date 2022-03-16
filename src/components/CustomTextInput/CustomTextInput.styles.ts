@@ -1,18 +1,23 @@
-import {Text, TextInput, View} from 'react-native';
+import {TextInput, View} from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
 import {SCREEN_WIDTH} from '../../constants/Screen';
 
 export const Container = styled(View)({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
   marginTop: 12,
   marginBottom: 12,
+  borderWidth: 1,
+  borderColor: Colors.white,
+  borderRadius: 8,
+  width: SCREEN_WIDTH / 1.3,
+  height: 50,
+  paddingLeft: 12,
+  paddingRight: 12,
 });
 
 export const Input = styled(TextInput)({
-  marginTop: 4,
-  width: SCREEN_WIDTH / 2,
-  height: 30,
-  borderBottomWidth: 0.2,
-  borderColor: Colors.white,
-  padding: 4,
+  marginLeft: 8,
 });
