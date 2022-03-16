@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {KeyboardType, StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {Colors} from '../../constants/Colors';
 import {Container, Input, Label} from './CustomTextInput.styles';
 
 interface TextInput {
@@ -31,9 +32,9 @@ interface TextInput {
 export const CustomTextInput: FC<TextInput> = props => {
   return (
     <Container>
-      <Label>{props.label}</Label>
       <Input
         placeholder={props.placeholder}
+        placeholderTextColor={Colors.white}
         onChangeText={props.onChange}
         secureTextEntry={props.secureText}
         value={props.value}

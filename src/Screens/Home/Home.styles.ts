@@ -10,7 +10,7 @@ export const HomeContainer = styled(View)({
   paddingLeft: 8,
   paddingRight: 8,
   paddingTop: 36,
-  backgroundColor: 'white',
+  backgroundImage: require('../../assets/background.png'),
 });
 
 export const DateText = styled(Text)({

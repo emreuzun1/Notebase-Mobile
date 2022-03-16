@@ -1,5 +1,6 @@
 import {Text, TextInput, View} from 'react-native';
 import styled from 'styled-components';
+import {Colors} from '../../constants/Colors';
 import {SCREEN_WIDTH} from '../../constants/Screen';
 
 export const Container = styled(View)({
@@ -7,17 +8,11 @@ export const Container = styled(View)({
   marginBottom: 12,
 });
 
-export const Label = styled(Text)({
-  fontSize: 11,
-  color: 'black',
-});
-
 export const Input = styled(TextInput)({
   marginTop: 4,
   width: SCREEN_WIDTH / 2,
   height: 30,
-  borderWidth: 0.2,
-  borderRadius: 8,
-  borderColor: 'black',
+  borderBottomWidth: 0.2,
+  borderColor: Colors.white,
   padding: 4,
 });
