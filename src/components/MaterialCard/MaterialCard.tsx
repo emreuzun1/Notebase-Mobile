@@ -18,13 +18,10 @@ interface IMaterial {
 export const MaterialCard: FC<IMaterial> = ({item}) => {
   return (
     <Container>
-      <Ionicons name="document-text" size={36} color={Colors.purple} />
+      <Ionicons name="document-text" size={48} color={Colors.white} />
       <View>
         <MaterialName>{item.name}</MaterialName>
         <MaterialCourseID>{item.courseID}</MaterialCourseID>
-        <MaterialTypeContainer>
-          <MaterialTypeText>{item.type}</MaterialTypeText>
-        </MaterialTypeContainer>
       </View>
     </Container>
   );

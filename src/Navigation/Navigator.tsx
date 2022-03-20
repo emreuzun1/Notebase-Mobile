@@ -13,6 +13,8 @@ import {Register} from '../Screens/Register/Register';
 import {Home} from '../Screens/Home/Home';
 import {Profile} from '../Screens/Profile/Profile';
 import {Upload} from '../Screens/Upload/Upload';
+import {Student} from '../Interfaces/Student';
+import {Colors} from '../constants/Colors';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -31,7 +33,13 @@ const Tab = createBottomTabNavigator<TabParamList>();
 const TabNavigator = () => {
   const {Navigator, Screen} = Tab;
   return (
-    <Navigator screenOptions={{headerShown: false}}>
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: Colors.black,
+        },
+      }}>
       <Screen
         name="Home"
         component={Home}
@@ -72,15 +80,7 @@ const MainNavigator = () => {
     <Navigator screenOptions={{headerShown: false}}>
       <Screen name="Login" component={Login} />
       <Screen name="Register" component={Register} />
-      <Screen
-        name="Home"
-        component={TabNavigator}
-        options={{
-          headerShown: true,
-          headerBackVisible: false,
-          headerStyle: {backgroundColor: 'white'},
-        }}
-      />
+      <Screen name="Home" component={TabNavigator} />
       <Screen name="Upload" component={Upload} />
     </Navigator>
   );

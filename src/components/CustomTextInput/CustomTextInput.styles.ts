@@ -1,4 +1,4 @@
-import {TextInput, View} from 'react-native';
+import {TextInput as RNTextInput, View} from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
 import {SCREEN_WIDTH} from '../../constants/Screen';
@@ -18,6 +18,12 @@ export const Container = styled(View)({
   paddingRight: 12,
 });
 
-export const Input = styled(TextInput)({
+export const TextInput = styled(RNTextInput)({
   marginLeft: 8,
+  color: Colors.white,
+  flex: 10,
+});
+
+export const IconContainer = styled(View)({
+  flex: 1,
 });

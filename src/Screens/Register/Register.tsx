@@ -1,12 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
 import {RootStackParamList} from '../../Navigation/types';
 
 import {CustomTextInput} from '../../components/CustomTextInput/CustomTextInput';
 import {
-  Container,
+  Form,
   KeyboardAvoiding,
   NewText,
   NotebaseIcon,
@@ -14,6 +17,13 @@ import {
   RegisterInfoText,
   RegisterText,
 } from './Register.styles';
+import {
+  emailValidator,
+  passwordValidator,
+  usernameValidator,
+} from '../../utils/Regex';
+import {register} from '../../lib/api';
+import {Background} from '../../components/Background/Background';
 
 type RegisterProps = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -21,14 +31,42 @@ interface IRegister {
   navigation: RegisterProps;
 }
 
+interface FormValues {
+  email: string;
+  password: string;
+  username: string;
+  confirmPassword: string;
+  school: string;
+}
+
 /**
  * @param navigation: Navigation object for navigate through screens.
  * @returns a JSX Element that shows us the Register Screen.
  */
 export const Register: FC<IRegister> = ({navigation}) => {
+  const initialValues: FormValues = {
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    school: '',
+  };
+
+  const registerF = async (values: FormValues) => {
+    await register({
+      email: values.email,
+      username: values.username,
+      password: values.password,
+    }).then(res => {
+      if (res.status === 200) {
+        navigation.goBack();
+      }
+    });
+  };
+
   return (
     <KeyboardAvoiding behavior="padding">
-      <Container source={require('../../assets/background.png')}>
+      <Background style={{justifyContent: 'center', alignItems: 'center'}}>
         <NotebaseIcon source={require('../../assets/notebase.png')} />
         <NewText>
           Welcome to{' '}
@@ -39,25 +77,52 @@ export const Register: FC<IRegister> = ({navigation}) => {
         <RegisterInfoText>
           Please fill the credentials to sign up
         </RegisterInfoText>
-        <View style={{marginTop: 48, alignItems: 'center'}}>
-          <CustomTextInput
-            placeholder="Enter your username"
-            icon="person-outline"
-          />
-          <CustomTextInput placeholder="Enter your mail" icon="mail-outline" />
-          <CustomTextInput
-            placeholder="Enter your password"
-            icon="lock-closed-outline"
-          />
-          <CustomTextInput
-            placeholder="Enter your password again"
-            icon="lock-closed-outline"
-          />
-          <RegisterButton onPress={() => navigation.goBack()}>
-            <RegisterText>Register</RegisterText>
-          </RegisterButton>
-        </View>
-      </Container>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={values => registerF(values)}>
+          {({handleChange, handleSubmit, values}) => (
+            <Form>
+              <CustomTextInput
+                placeholder="Enter your username"
+                icon="person-outline"
+                onChange={handleChange('username')}
+                value={values.username}
+                validator={usernameValidator}
+              />
+              <CustomTextInput
+                placeholder="Enter your mail"
+                icon="mail-outline"
+                validator={emailValidator}
+                onChange={handleChange('email')}
+                value={values.email}
+              />
+              <CustomTextInput
+                placeholder="Enter your password"
+                validator={passwordValidator}
+                icon="lock-closed-outline"
+                onChange={handleChange('password')}
+                value={values.password}
+              />
+              <CustomTextInput
+                placeholder="Enter your password again"
+                icon="lock-closed-outline"
+                validator={passwordValidator}
+                onChange={handleChange('confirmPassword')}
+                value={values.confirmPassword}
+              />
+              <CustomTextInput
+                placeholder="Enter your school"
+                icon="school-outline"
+                onChange={handleChange('school')}
+                value={values.school}
+              />
+              <RegisterButton onPress={handleSubmit}>
+                <RegisterText>Register</RegisterText>
+              </RegisterButton>
+            </Form>
+          )}
+        </Formik>
+      </Background>
     </KeyboardAvoiding>
   );
 };

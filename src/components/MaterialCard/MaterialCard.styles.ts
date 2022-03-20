@@ -3,44 +3,27 @@ import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
 
 export const Container = styled(View)({
-  width: 150,
-  height: 150,
+  width: 175,
+  height: 200,
   justifyContent: 'center',
   alignItems: 'center',
   padding: 8,
-  backgroundColor: 'rgba(89, 65, 125, 0.1)',
-  borderWidth: 3,
-  borderColor: Colors.purple,
+  backgroundColor: '#171717',
   marginLeft: 8,
-  borderRadius: 24,
+  borderRadius: 12,
 });
 
 export const MaterialName = styled(Text)({
-  fontSize: 14,
-  fontWeight: '400',
-  color: Colors.purple,
+  fontSize: 20,
+  fontWeight: '600',
+  color: Colors.white,
+  fontFamily: 'Raleway-Regular',
 });
 
 export const MaterialCourseID = styled(Text)({
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: '400',
-  color: Colors.purple,
+  fontFamily: 'Raleway-Regular',
+  color: Colors.white,
   marginTop: 4,
-});
-
-export const MaterialTypeContainer = styled(View)({
-  width: 65,
-  backgroundColor: Colors.purple,
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: 4,
-  borderRadius: 24,
-  marginTop: 4,
-});
-
-export const MaterialTypeText = styled(Text)({
-  maxWidth: '80%',
-  fontSize: 12,
-  fontWeight: '400',
-  color: 'white',
 });

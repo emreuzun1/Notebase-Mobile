@@ -1,6 +1,5 @@
 import {
   Image,
-  ImageBackground,
   KeyboardAvoidingView,
   Text,
   TouchableOpacity,
@@ -15,12 +14,6 @@ export const KeyboardAvoiding = styled(KeyboardAvoidingView)({
   backgroundColor: Colors.black,
 });
 
-export const Container = styled(ImageBackground)({
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-});
-
 export const NotebaseIcon = styled(Image)({
   marginBottom: 48,
 });
@@ -31,6 +24,11 @@ export const NewText = styled(Text)({
   color: Colors.white,
 });
 
+export const Form = styled(View)({
+  marginTop: 48,
+  alignItems: 'center',
+});
+
 export const RegisterInfoText = styled(Text)({
   fontSize: 14,
   fontFamily: 'Raleway-Regular',
@@ -39,15 +37,15 @@ export const RegisterInfoText = styled(Text)({
 });
 export const RegisterButton = styled(TouchableOpacity)({
   marginTop: 48,
-  width: 108,
+  width: 96,
   height: 40,
   borderRadius: 12,
-  backgroundColor: Colors.purple,
+  backgroundColor: Colors.orange,
   justifyContent: 'center',
   alignItems: 'center',
 });
 
 export const RegisterText = styled(Text)({
-  fontSize: 20,
-  color: 'white',
+  fontSize: 16,
+  color: Colors.white,
 });

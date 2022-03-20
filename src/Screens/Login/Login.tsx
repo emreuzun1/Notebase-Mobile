@@ -2,12 +2,11 @@
 import React, {FC, useState} from 'react';
 import {Text, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../Navigation/types';
+import {RootStackParamList} from '../../Navigation/Navigator';
 
 import {CustomTextInput} from '../../components/CustomTextInput/CustomTextInput';
 import {Colors} from '../../constants/Colors';
 import {
-  Background,
   ForgotText,
   KeyboardAvoiding,
   LoginButton,
@@ -18,6 +17,10 @@ import {
   RegisterButton,
   RegisterText,
 } from './Login.styles';
+import {passwordValidator, usernameValidator} from '../../utils/Regex';
+import {LoginInterface} from '../../Interfaces/Student';
+import {loginApi} from '../../lib/api';
+import {Background} from '../../components/Background/Background';
 
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -34,11 +37,17 @@ export const Login: FC<ILogin> = ({navigation}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const login = async () => {
+    await loginApi({username, password}).then(res => {
+      if (res.status === 200) {
+        navigation.navigate('Home');
+      }
+    });
+  };
+
   return (
     <KeyboardAvoiding behavior="padding">
-      <Background
-        source={require('../../assets/background.png')}
-        resizeMode="cover">
+      <Background style={{justifyContent: 'center', alignItems: 'center'}}>
         <NotebaseIcon
           source={require('../../assets/notebase.png')}
           resizeMode="contain"
@@ -55,11 +64,13 @@ export const Login: FC<ILogin> = ({navigation}) => {
             placeholder="Username"
             value={username}
             onChange={val => setUsername(val)}
+            icon="person-outline"
           />
           <CustomTextInput
             placeholder="Password"
             value={password}
             onChange={val => setPassword(val)}
+            icon="lock-closed-outline"
             secureText
           />
           <ForgotText>
@@ -75,7 +86,7 @@ export const Login: FC<ILogin> = ({navigation}) => {
             </Text>
           </ForgotText>
         </View>
-        <LoginButton onPress={() => navigation.navigate('Home')}>
+        <LoginButton onPress={() => login()}>
           <LoginText>Login</LoginText>
         </LoginButton>
         <RegisterButton onPress={() => navigation.navigate('Register')}>

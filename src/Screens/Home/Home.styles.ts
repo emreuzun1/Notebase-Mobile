@@ -3,24 +3,28 @@ import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
 import {SCREEN_WIDTH} from '../../constants/Screen';
 
-export const HomeSafeView = styled(SafeAreaView)({});
+export const HomeSafeView = styled(SafeAreaView)({
+  flex: 1,
+  backgroundColor: Colors.black,
+});
 
 export const HomeContainer = styled(View)({
   flex: 1,
   paddingLeft: 8,
   paddingRight: 8,
   paddingTop: 36,
-  backgroundImage: require('../../assets/background.png'),
 });
 
 export const DateText = styled(Text)({
   fontSize: 18,
   fontWeight: '300',
+  color: Colors.white,
 });
 
 export const WelcomeText = styled(Text)({
   fontSize: 36,
   marginTop: 8,
+  color: Colors.white,
 });
 
 export const ListContainer = styled(View)({
@@ -37,12 +41,14 @@ export const ListTitleContainer = styled(View)({
 export const ListTitle = styled(Text)({
   fontSize: 18,
   fontWeight: '700',
+  color: Colors.white,
 });
 
 export const ListSubtitleText = styled(Text)({
   fontSize: 14,
   fontWeight: '300',
   marginTop: 4,
+  color: Colors.white,
 });
 
 export const ViewText = styled(Text)({

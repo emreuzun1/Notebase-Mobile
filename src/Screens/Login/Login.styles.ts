@@ -1,6 +1,5 @@
 import {
   Image,
-  ImageBackground,
   KeyboardAvoidingView,
   Text,
   TouchableOpacity,
@@ -11,12 +10,6 @@ import {Colors} from '../../constants/Colors';
 export const KeyboardAvoiding = styled(KeyboardAvoidingView)({
   flex: 1,
   backgroundColor: Colors.black,
-});
-
-export const Background = styled(ImageBackground)({
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
 });
 
 export const NotebaseIcon = styled(Image)({
