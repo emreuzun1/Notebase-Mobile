@@ -10,7 +10,7 @@ export const Background: FC<I> = props => {
   return (
     <ImageBackground
       source={require('../../assets/background.png')}
-      style={[{flex: 1}, props.style]}
+      style={[{flex: 1, backgroundColor: 'black'}, props.style]}
       resizeMode="cover">
       {props.children}
     </ImageBackground>

@@ -1,7 +1,6 @@
 import {SafeAreaView, Text, View} from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
-import {SCREEN_WIDTH} from '../../constants/Screen';
 
 export const HomeSafeView = styled(SafeAreaView)({
   flex: 1,
@@ -15,16 +14,18 @@ export const HomeContainer = styled(View)({
   paddingTop: 36,
 });
 
-export const DateText = styled(Text)({
-  fontSize: 18,
-  fontWeight: '300',
+export const HiText = styled(Text)({
+  fontSize: 20,
+  fontFamily: 'Raleway',
   color: Colors.white,
 });
 
 export const WelcomeText = styled(Text)({
-  fontSize: 36,
-  marginTop: 8,
+  fontSize: 20,
+  fontFamily: 'Raleway',
+  fontWeight: 'bold',
   color: Colors.white,
+  marginTop: 8,
 });
 
 export const ListContainer = styled(View)({
@@ -41,13 +42,6 @@ export const ListTitleContainer = styled(View)({
 export const ListTitle = styled(Text)({
   fontSize: 18,
   fontWeight: '700',
-  color: Colors.white,
-});
-
-export const ListSubtitleText = styled(Text)({
-  fontSize: 14,
-  fontWeight: '300',
-  marginTop: 4,
   color: Colors.white,
 });
 

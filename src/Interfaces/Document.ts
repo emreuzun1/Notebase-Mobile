@@ -1,5 +1,3 @@
-import {Student} from './Student';
-
 export interface Document {
   id: string;
   title: string;
@@ -14,4 +12,9 @@ export interface Document {
   file: any;
   date: string;
   user: string;
+}
+
+export interface DocumentState {
+  documents: Document[];
+  loading: boolean;
 }

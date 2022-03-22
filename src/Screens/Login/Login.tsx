@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Platform, Text, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../Navigation/Navigator';
 
@@ -21,8 +21,9 @@ import {passwordValidator, usernameValidator} from '../../utils/Regex';
 import {LoginInterface} from '../../Interfaces/Student';
 import {loginApi} from '../../lib/api';
 import {Background} from '../../components/Background/Background';
-import {useAppDispatch} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {requestLogin} from '../../redux/actions';
+import {State} from '../../Interfaces/State';
 
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -39,14 +40,27 @@ export const Login: FC<ILogin> = ({navigation}) => {
   const dispatch = useAppDispatch();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const {loading} = useAppSelector((state: State) => state.auth);
 
   const login = async () => {
     dispatch(requestLogin({username, password}));
   };
 
-  return (
-    <KeyboardAvoiding behavior="padding">
+  if (loading) {
+    return (
       <Background style={{justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="white" />
+      </Background>
+    );
+  }
+
+  return (
+    <KeyboardAvoiding behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Background
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <NotebaseIcon
           source={require('../../assets/notebase.png')}
           resizeMode="contain"

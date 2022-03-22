@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Text} from 'react-native';
+import {Platform, Text} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
@@ -65,8 +65,12 @@ export const Register: FC<IRegister> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAvoiding behavior="padding">
-      <Background style={{justifyContent: 'center', alignItems: 'center'}}>
+    <KeyboardAvoiding behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Background
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <NotebaseIcon source={require('../../assets/notebase.png')} />
         <NewText>
           Welcome to{' '}

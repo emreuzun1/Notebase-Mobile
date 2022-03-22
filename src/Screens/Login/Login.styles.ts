@@ -9,7 +9,6 @@ import {Colors} from '../../constants/Colors';
 
 export const KeyboardAvoiding = styled(KeyboardAvoidingView)({
   flex: 1,
-  backgroundColor: Colors.black,
 });
 
 export const NotebaseIcon = styled(Image)({
@@ -51,8 +50,7 @@ export const LoginText = styled(Text)({
 
 export const RegisterButton = styled(TouchableOpacity)({
   flexDirection: 'row',
-  position: 'absolute',
-  bottom: 24,
+  marginTop: 24,
 });
 
 export const RegisterText = styled(Text)({
