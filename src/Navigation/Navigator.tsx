@@ -15,6 +15,7 @@ import {Profile} from '../Screens/Profile/Profile';
 import {Upload} from '../Screens/Upload/Upload';
 import {Student} from '../Interfaces/Student';
 import {Colors} from '../constants/Colors';
+import {navigationRef} from './RootNavigation';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -89,7 +90,7 @@ const MainNavigator = () => {
 //Navigation Container for App
 export const Navigation = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <MainNavigator />
     </NavigationContainer>
   );

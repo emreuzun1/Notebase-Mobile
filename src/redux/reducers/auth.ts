@@ -40,5 +40,9 @@ export default function (state = initialState, action: ActionInterface) {
         loading: false,
       };
     }
+    default:
+      return {
+        ...state,
+      };
   }
 }

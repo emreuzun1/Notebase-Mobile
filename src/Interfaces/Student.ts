@@ -10,5 +10,17 @@ export interface LoginInterface {
 }
 
 export interface Student {
-  username: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+  };
+  token: string;
+}
+
+export interface StudentState {
+  loading: boolean;
+  student: Student | undefined;
+  errorMessage: string;
 }

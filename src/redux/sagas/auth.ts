@@ -1,5 +1,6 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
 import * as type from '../types';
+import * as RootNavigation from '../../Navigation/RootNavigation';
 
 import {registerApi, loginApi} from '../../lib/api';
 import {
@@ -21,8 +22,8 @@ function* userLogin(action: SagaStudentInterface) {
       status,
     } = yield call(loginApi, {username, password});
     if (status === 200) {
-      yield put({type: type.USER_REGISTER_SUCCESS, payload: {user, token}});
-      console.log('SUCCESS');
+      yield put({type: type.USER_LOGIN_SUCCESS, payload: {user, token}});
+      RootNavigation.navigate('Home', {});
     }
   } catch (err) {
     console.log(err);

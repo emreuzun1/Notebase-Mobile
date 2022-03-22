@@ -21,6 +21,8 @@ import {passwordValidator, usernameValidator} from '../../utils/Regex';
 import {LoginInterface} from '../../Interfaces/Student';
 import {loginApi} from '../../lib/api';
 import {Background} from '../../components/Background/Background';
+import {useAppDispatch} from '../../redux/hooks';
+import {requestLogin} from '../../redux/actions';
 
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -34,15 +36,12 @@ interface ILogin {
  * @returns a JSX Element that shows us the Login Screen.
  */
 export const Login: FC<ILogin> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const login = async () => {
-    await loginApi({username, password}).then(res => {
-      if (res.status === 200) {
-        navigation.navigate('Home');
-      }
-    });
+    dispatch(requestLogin({username, password}));
   };
 
   return (
