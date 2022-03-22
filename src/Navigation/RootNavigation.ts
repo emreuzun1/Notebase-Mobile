@@ -6,6 +6,5 @@ export const navigationRef =
   React.createRef<NavigationContainerRef<RootStackParamList>>();
 
 export function navigate(name: any, params: any) {
-  console.log(navigationRef);
   navigationRef.current?.navigate(name, params);
 }

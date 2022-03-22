@@ -1,5 +1,6 @@
 import {Student, StudentState} from '../../Interfaces/Student';
 import * as type from '../types';
+import produce from 'immer';
 
 interface ActionInterface {
   payload: Student;
@@ -13,36 +14,27 @@ const initialState: StudentState = {
   errorMessage: '',
 };
 
-export default function (state = initialState, action: ActionInterface) {
-  switch (action.type) {
-    case type.USER_LOGIN_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-      };
+export default (state = initialState, action: ActionInterface) =>
+  produce(state, (draft: StudentState) => {
+    switch (action.type) {
+      case type.USER_LOGIN_REQUEST: {
+        draft.loading = true;
+        break;
+      }
+      case type.USER_LOGIN_SUCCESS: {
+        draft.student = action.payload;
+        draft.loading = false;
+        break;
+      }
+      case type.USER_REGISTER_REQUEST: {
+        draft.loading = true;
+        break;
+      }
+      case type.USER_REGISTER_SUCCESS: {
+        draft.loading = false;
+        break;
+      }
+      default:
+        return state;
     }
-    case type.USER_LOGIN_SUCCESS: {
-      return {
-        ...state,
-        student: action.payload,
-        loading: false,
-      };
-    }
-    case type.USER_REGISTER_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-    case type.USER_REGISTER_SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-      };
-    }
-    default:
-      return {
-        ...state,
-      };
-  }
-}
+  });

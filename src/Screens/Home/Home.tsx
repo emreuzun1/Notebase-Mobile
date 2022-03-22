@@ -1,9 +1,11 @@
 import React from 'react';
 import {FlatList, View} from 'react-native';
-import {Background} from '../../components/Background/Background';
+import {useSelector} from 'react-redux';
 
+import {Background} from '../../components/Background/Background';
 import {MaterialCard} from '../../components/MaterialCard/MaterialCard';
 import {DummyMaterials} from '../../lib/Data';
+import {useAppSelector} from '../../redux/hooks';
 import {
   DateText,
   HomeContainer,
@@ -14,6 +16,7 @@ import {
   ListTitleContainer,
   WelcomeText,
 } from './Home.styles';
+import {State} from '../../Interfaces/State';
 
 const months = [
   'January',
@@ -43,6 +46,8 @@ const days = [
 export const Home = () => {
   const getDate = new Date();
   const hour = getDate.getHours();
+  const student = useSelector((state: State) => state.auth);
+  console.log(student);
 
   return (
     <HomeSafeView>
