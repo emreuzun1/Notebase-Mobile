@@ -30,7 +30,6 @@ export const MaterialCourseID = styled(Text)({
 
 export const ReviewContainer = styled(View)({
   alignSelf: 'flex-end',
-  marginTop: 4,
   flexDirection: 'row',
   alignItems: 'center',
 });
@@ -39,4 +38,5 @@ export const ReviewText = styled(Text)({
   fontSize: 16,
   color: Colors.white,
   marginLeft: 4,
+  marginRight: 12,
 });

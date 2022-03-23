@@ -11,7 +11,6 @@ export const HomeContainer = styled(View)({
   flex: 1,
   paddingLeft: 8,
   paddingRight: 8,
-  paddingTop: 36,
 });
 
 export const HiText = styled(Text)({

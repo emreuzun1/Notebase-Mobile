@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, FC} from 'react';
 import {ActivityIndicator, FlatList} from 'react-native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import {Background} from '../../components/Background/Background';
 import {MaterialCard} from '../../components/MaterialCard/MaterialCard';
@@ -17,8 +18,16 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {requestDocuments} from '../../redux/actions';
 import {getDocuments} from '../../redux/reducers/selector';
 import {useSelector} from 'react-redux';
+import {Header} from '../../components/Header/Header';
+import {RootStackParamList} from '../../Navigation/Navigator';
 
-export const Home = () => {
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
+interface IHome {
+  navigation: NavigationProp;
+}
+
+export const Home: FC<IHome> = ({navigation}) => {
   const {student} = useAppSelector((state: State) => state.auth);
   const {loading} = useAppSelector((state: State) => state.document);
   const dispatch = useAppDispatch();
@@ -39,6 +48,7 @@ export const Home = () => {
   return (
     <HomeSafeView>
       <Background>
+        <Header navigation={navigation} />
         <HomeContainer>
           <HiText>Hi, {student?.user.username}</HiText>
           <WelcomeText>Welcome Back ✋</WelcomeText>

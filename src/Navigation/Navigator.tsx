@@ -81,7 +81,10 @@ const MainNavigator = () => {
   const {Navigator, Screen} = MainStack;
 
   return (
-    <Navigator screenOptions={{headerShown: false}}>
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Screen name="Login" component={Login} />
       <Screen name="Register" component={Register} />
       <Screen name="Home" component={TabNavigator} />

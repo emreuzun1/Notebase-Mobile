@@ -2,6 +2,7 @@
 import React, {FC} from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {Colors} from '../../constants/Colors';
 import {Document} from '../../Interfaces/Document';
@@ -32,7 +33,11 @@ export const MaterialCard: FC<IMaterial> = ({item}) => {
         </View>
       </View>
       <ReviewContainer>
-        <Ionicons name="heart" size={24} color={Colors.red} />
+        <Ionicons name="heart" size={24} color={Colors.purple} />
+        <ReviewText>{item.like_count}</ReviewText>
+        <Ionicons name="heart-dislike" size={24} color={Colors.orange} />
+        <ReviewText>{item.like_count}</ReviewText>
+        <MaterialIcons name="report" size={24} color={Colors.white} />
         <ReviewText>{item.like_count}</ReviewText>
       </ReviewContainer>
     </Container>
