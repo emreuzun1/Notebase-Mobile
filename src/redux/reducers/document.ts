@@ -24,5 +24,7 @@ export default (state = initialState, action: ActionInterface) =>
         draft.documents = action.payload;
         break;
       }
+      default:
+        return state;
     }
   });

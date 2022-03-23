@@ -16,11 +16,14 @@ import {Upload} from '../Screens/Upload/Upload';
 import {Student} from '../Interfaces/Student';
 import {Colors} from '../constants/Colors';
 import {navigationRef} from './RootNavigation';
+import {Document} from '../Interfaces/Document';
+import DocumentScreen from '../Screens/Document/Document';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: NavigatorScreenParams<TabParamList>;
+  Document: Document;
   Upload: undefined;
 };
 
@@ -82,6 +85,7 @@ const MainNavigator = () => {
       <Screen name="Login" component={Login} />
       <Screen name="Register" component={Register} />
       <Screen name="Home" component={TabNavigator} />
+      <Screen name="Document" component={DocumentScreen} />
       <Screen name="Upload" component={Upload} />
     </Navigator>
   );

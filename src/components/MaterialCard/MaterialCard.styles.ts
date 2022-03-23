@@ -1,21 +1,22 @@
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
+import {SCREEN_WIDTH} from '../../constants/Screen';
 
-export const Container = styled(View)({
-  width: 175,
-  height: 200,
-  justifyContent: 'center',
+export const Container = styled(TouchableOpacity)({
+  width: SCREEN_WIDTH / 1.1,
   alignItems: 'center',
-  padding: 8,
   backgroundColor: '#171717',
   marginLeft: 8,
+  paddingTop: 12,
+  paddingBottom: 6,
+  paddingRight: 12,
   borderRadius: 12,
 });
 
 export const MaterialName = styled(Text)({
   fontSize: 20,
-  fontWeight: '600',
+  fontWeight: 'bold',
   color: Colors.white,
   fontFamily: 'Raleway-Regular',
 });
@@ -23,7 +24,19 @@ export const MaterialName = styled(Text)({
 export const MaterialCourseID = styled(Text)({
   fontSize: 14,
   fontWeight: '400',
-  fontFamily: 'Raleway-Regular',
   color: Colors.white,
   marginTop: 4,
+});
+
+export const ReviewContainer = styled(View)({
+  alignSelf: 'flex-end',
+  marginTop: 4,
+  flexDirection: 'row',
+  alignItems: 'center',
+});
+
+export const ReviewText = styled(Text)({
+  fontSize: 16,
+  color: Colors.white,
+  marginLeft: 4,
 });

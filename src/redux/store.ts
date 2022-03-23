@@ -10,7 +10,6 @@ import rootSaga from './sagas/index';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth'],
 };
 
 const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
