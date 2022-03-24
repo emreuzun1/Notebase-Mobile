@@ -4,6 +4,7 @@ import {Colors} from '../../constants/Colors';
 
 export const SafeView = styled(SafeAreaView)({
   flex: 1,
+  backgroundColor: Colors.black,
 });
 
 export const Container = styled(View)({

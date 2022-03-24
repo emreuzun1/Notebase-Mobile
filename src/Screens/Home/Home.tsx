@@ -48,7 +48,7 @@ export const Home: FC<IHome> = ({navigation}) => {
   return (
     <HomeSafeView>
       <Background>
-        <Header navigation={navigation} />
+        <Header navigation={navigation} searchShown={true} />
         <HomeContainer>
           <HiText>Hi, {student?.user.username}</HiText>
           <WelcomeText>Welcome Back ✋</WelcomeText>

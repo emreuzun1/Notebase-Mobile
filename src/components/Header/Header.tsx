@@ -10,17 +10,21 @@ import {HeaderBar} from './Header.styles';
 
 interface IHeader {
   navigation: NavigationProp<RootStackParamList>;
+  searchShown?: boolean;
 }
 
-export const Header: FC<IHeader> = ({navigation}) => {
+export const Header: FC<IHeader> = ({navigation, searchShown}) => {
   return (
     <HeaderBar>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Entypo name="chevron-thin-left" size={24} color={Colors.white} />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Ionicons name="search" size={24} color={Colors.white} />
-      </TouchableOpacity>
+
+      {searchShown && (
+        <TouchableOpacity>
+          <Ionicons name="search" size={24} color={Colors.white} />
+        </TouchableOpacity>
+      )}
     </HeaderBar>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   NavigationContainer,
   NavigatorScreenParams,
@@ -13,11 +13,11 @@ import {Register} from '../Screens/Register/Register';
 import {Home} from '../Screens/Home/Home';
 import {Profile} from '../Screens/Profile/Profile';
 import {Upload} from '../Screens/Upload/Upload';
-import {Student} from '../Interfaces/Student';
 import {Colors} from '../constants/Colors';
 import {navigationRef} from './RootNavigation';
 import {Document} from '../Interfaces/Document';
 import DocumentScreen from '../Screens/Document/Document';
+import {CreateDocument} from '../Screens/CreateDocument/CreateDocument';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -30,6 +30,7 @@ export type RootStackParamList = {
 export type TabParamList = {
   Home: undefined;
   Profile: undefined;
+  Create: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -41,19 +42,43 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          position: 'absolute',
+          height: 64,
           backgroundColor: Colors.black,
+          borderTopWidth: 0,
+          ...styles.shadow,
         },
+        tabBarShowLabel: false,
       }}>
       <Screen
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-            Platform.OS === 'android'
-              ? (iconName = focused ? 'md-home' : 'md-home-outline')
-              : (iconName = focused ? 'ios-home' : 'ios-home-outline');
-            return <Ionicons name={iconName} size={size} color={color} />;
+          tabBarIcon: ({focused, size}) => {
+            return (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+                size={size}
+                color={focused ? Colors.purple : Colors.white}
+              />
+            );
+          },
+        }}
+      />
+      <Screen
+        name="Create"
+        component={CreateDocument}
+        options={{
+          tabBarIcon: ({focused, size}) => {
+            return (
+              <View
+                style={[
+                  styles.addButton,
+                  {backgroundColor: focused ? Colors.purple : Colors.orange},
+                ]}>
+                <Ionicons name="add" size={size} color={Colors.black} />
+              </View>
+            );
           },
         }}
       />
@@ -61,12 +86,14 @@ const TabNavigator = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-            Platform.OS === 'android'
-              ? (iconName = focused ? 'md-person' : 'md-person-outline')
-              : (iconName = focused ? 'ios-person' : 'ios-person-outline');
-            return <Ionicons name={iconName} size={size} color={color} />;
+          tabBarIcon: ({focused, size}) => {
+            return (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
+                size={size}
+                color={focused ? Colors.purple : Colors.white}
+              />
+            );
           },
         }}
       />
@@ -102,3 +129,22 @@ export const Navigation = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: Colors.purple,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  addButton: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
