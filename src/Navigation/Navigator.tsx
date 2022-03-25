@@ -18,11 +18,13 @@ import {navigationRef} from './RootNavigation';
 import {Document} from '../Interfaces/Document';
 import DocumentScreen from '../Screens/Document/Document';
 import {CreateDocument} from '../Screens/CreateDocument/CreateDocument';
+import {Search} from '../Screens/Search/Search';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: NavigatorScreenParams<TabParamList>;
+  Search: undefined;
   Document: Document;
   Upload: undefined;
 };
@@ -117,6 +119,7 @@ const MainNavigator = () => {
       <Screen name="Home" component={TabNavigator} />
       <Screen name="Document" component={DocumentScreen} />
       <Screen name="Upload" component={Upload} />
+      <Screen name="Search" component={Search} />
     </Navigator>
   );
 };

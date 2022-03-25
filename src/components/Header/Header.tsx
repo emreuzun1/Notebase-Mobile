@@ -21,7 +21,7 @@ export const Header: FC<IHeader> = ({navigation, searchShown}) => {
       </TouchableOpacity>
 
       {searchShown && (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
           <Ionicons name="search" size={24} color={Colors.white} />
         </TouchableOpacity>
       )}

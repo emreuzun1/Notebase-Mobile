@@ -46,25 +46,23 @@ export const Home: FC<IHome> = ({navigation}) => {
   }
 
   return (
-    <HomeSafeView>
-      <Background>
-        <Header navigation={navigation} searchShown={true} />
-        <HomeContainer>
-          <HiText>Hi, {student?.user.username}</HiText>
-          <WelcomeText>Welcome Back ✋</WelcomeText>
-          <ListContainer>
-            <ListTitleContainer>
-              <ListTitle>Materials for you</ListTitle>
-            </ListTitleContainer>
-            <FlatList
-              horizontal
-              style={{marginTop: 8}}
-              data={data}
-              renderItem={({item}) => <MaterialCard item={item} />}
-            />
-          </ListContainer>
-        </HomeContainer>
-      </Background>
-    </HomeSafeView>
+    <Background>
+      <Header navigation={navigation} searchShown={true} />
+      <HomeContainer>
+        <HiText>Hi, {student?.user.username}</HiText>
+        <WelcomeText>Welcome Back ✋</WelcomeText>
+        <ListContainer>
+          <ListTitleContainer>
+            <ListTitle>Materials for you</ListTitle>
+          </ListTitleContainer>
+          <FlatList
+            horizontal
+            style={{marginTop: 8}}
+            data={data}
+            renderItem={({item}) => <MaterialCard item={item} />}
+          />
+        </ListContainer>
+      </HomeContainer>
+    </Background>
   );
 };
