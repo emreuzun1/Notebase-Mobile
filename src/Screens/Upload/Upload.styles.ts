@@ -1,63 +1,90 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput as RNTextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styled from 'styled-components';
+import {Dropdown as RNDropdown} from 'react-native-element-dropdown';
+
 import {Colors} from '../../constants/Colors';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants/Screen';
+import {SCREEN_WIDTH} from '../../constants/Screen';
 
-export const UploadContainer = styled(View)({
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
-  alignItems: 'center',
-  paddingLeft: 6,
-  paddingRight: 6,
-  backgroundColor: 'white',
-  paddingTop: 128,
+export const Container = styled(ScrollView)({
+  flex: 1,
+  paddingTop: 32,
 });
 
-export const FieldContainer = styled(View)({
-  width: '100%',
-  justifyContent: 'space-between',
+export const TitleInput = styled(RNTextInput)({
+  height: 50,
+  color: 'white',
+  fontFamily: 'Raleway',
+  fontSize: 24,
+  fontWeight: 'bold',
+});
+
+export const InputContainer = styled(View)({
   flexDirection: 'row',
+  width: SCREEN_WIDTH / 1.2,
   alignItems: 'center',
-  marginTop: 36,
 });
 
-export const FieldTitle = styled(Text)({
-  width: '30%',
-  fontSize: 17,
-  color: 'black',
+export const TextInput = styled(RNTextInput)({
+  width: SCREEN_WIDTH / 1.4,
+  fontSize: 18,
+  color: Colors.white,
+  padding: 4,
+  borderBottomWidth: 0.3,
+  borderColor: Colors.white,
+  marginLeft: 8,
 });
 
-export const UploadButtonContainer = styled(TouchableOpacity)({
-  width: 180,
-  height: 35,
+export const Dropdown = styled(RNDropdown)({
+  width: SCREEN_WIDTH / 1.2,
+  height: 50,
+  borderColor: 'gray',
+  marginTop: 12,
+  paddingRight: 8,
+});
+
+export const DescriptionContainer = styled(RNTextInput)({
+  width: SCREEN_WIDTH / 1.1,
+  height: 100,
+  borderRadius: 12,
+  borderWidth: 0.5,
+  borderColor: Colors.white,
+  marginTop: 12,
+  marginBottom: 24,
+  color: Colors.white,
+  padding: 12,
+  fontSize: 24,
+});
+
+export const PickButton = styled(TouchableOpacity)({
+  width: SCREEN_WIDTH / 1.1,
+  height: 125,
+  marginTop: 12,
+  borderRadius: 12,
+  borderWidth: 0.5,
+  borderColor: Colors.white,
+  alignItems: 'center',
   justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'rgba(89, 65, 125, 0.1)',
-  borderWidth: 1,
-  borderColor: Colors.purple,
-  borderRadius: 8,
-  alignSelf: 'center',
-});
-
-export const FieldText = styled(Text)({
-  width: '70%',
-  fontSize: 17,
-  color: 'black',
-  textAlign: 'center',
 });
 
 export const UploadButton = styled(TouchableOpacity)({
-  width: SCREEN_WIDTH / 1.3,
-  backgroundColor: Colors.orange,
-  borderRadius: 10,
+  width: 125,
   height: 50,
-  justifyContent: 'center',
+  borderRadius: 12,
+  backgroundColor: Colors.orange,
   alignItems: 'center',
-  marginTop: 48,
+  justifyContent: 'center',
+  marginTop: 12,
 });
 
 export const UploadText = styled(Text)({
-  fontSize: 24,
-  fontWeight: '400',
-  color: 'white',
+  fontSize: 22,
+  fontFamily: 'Raleway',
+  color: Colors.white,
+  fontWeight: 'bold',
 });

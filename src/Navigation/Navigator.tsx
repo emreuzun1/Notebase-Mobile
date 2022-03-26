@@ -17,7 +17,6 @@ import {Colors} from '../constants/Colors';
 import {navigationRef} from './RootNavigation';
 import {Document} from '../Interfaces/Document';
 import DocumentScreen from '../Screens/Document/Document';
-import {CreateDocument} from '../Screens/CreateDocument/CreateDocument';
 import {Search} from '../Screens/Search/Search';
 
 export type RootStackParamList = {
@@ -32,7 +31,7 @@ export type RootStackParamList = {
 export type TabParamList = {
   Home: undefined;
   Profile: undefined;
-  Create: undefined;
+  Upload: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -68,8 +67,8 @@ const TabNavigator = () => {
         }}
       />
       <Screen
-        name="Create"
-        component={CreateDocument}
+        name="Upload"
+        component={Upload}
         options={{
           tabBarIcon: ({focused, size}) => {
             return (

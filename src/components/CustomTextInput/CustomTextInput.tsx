@@ -41,7 +41,6 @@ type InputState = typeof Valid | typeof Invalid | typeof Pristine;
  * @returns -> Custom TextInput
  */
 export const CustomTextInput: FC<TextInput> = props => {
-  const [input, setInput] = useState<string>(props.value!);
   const [state, setState] = useState<InputState>(Pristine);
   const color =
     state === Pristine

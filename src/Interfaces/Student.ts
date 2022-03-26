@@ -21,6 +21,6 @@ export interface Student {
 
 export interface StudentState {
   loading: boolean;
-  student: Student | undefined;
+  student: Student;
   errorMessage: string;
 }

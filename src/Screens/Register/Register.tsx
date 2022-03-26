@@ -3,9 +3,8 @@ import React, {FC} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Platform, Text} from 'react-native';
 import {Formik} from 'formik';
-import * as Yup from 'yup';
 
-import {RootStackParamList} from '../../Navigation/types';
+import {RootStackParamList} from '../../Navigation/Navigator';
 
 import {CustomTextInput} from '../../components/CustomTextInput/CustomTextInput';
 import {
@@ -52,6 +51,7 @@ export const Register: FC<IRegister> = ({navigation}) => {
     school: '',
   };
 
+  // Register Function to dispatch values.
   const registerF = async (values: FormValues) => {
     await register({
       email: values.email,

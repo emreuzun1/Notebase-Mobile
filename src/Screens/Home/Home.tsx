@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, FC} from 'react';
 import {ActivityIndicator, FlatList} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -7,7 +8,6 @@ import {MaterialCard} from '../../components/MaterialCard/MaterialCard';
 import {
   HiText,
   HomeContainer,
-  HomeSafeView,
   ListContainer,
   ListTitle,
   ListTitleContainer,
@@ -27,16 +27,23 @@ interface IHome {
   navigation: NavigationProp;
 }
 
+/**
+ *
+ * @param navigation To navigate through screens.
+ * @returns The JSX of Home Screen.
+ */
 export const Home: FC<IHome> = ({navigation}) => {
   const {student} = useAppSelector((state: State) => state.auth);
   const {loading} = useAppSelector((state: State) => state.document);
   const dispatch = useAppDispatch();
   const data = useSelector(getDocuments);
 
+  // Before render of the screen, gets the document from database.
   useEffect(() => {
     dispatch(requestDocuments(student?.token!));
   }, [dispatch, student]);
 
+  // If loading is true, indicator will show up in the screen.
   if (loading) {
     return (
       <Background style={{justifyContent: 'center', alignItems: 'center'}}>

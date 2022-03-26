@@ -37,3 +37,14 @@ export const getDocumentsApi = (token: string) => {
 export const getStudentApi = (id: string) => {
   return axios.get(`https://notebase-api.herokuapp.com/api/student/get/${id}`);
 };
+
+export const getStudentDownloadsApi = (id: string, token: string) => {
+  return axios.get(
+    `https://notebase-api.herokuapp.com/api/download/get/${id}`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    },
+  );
+};

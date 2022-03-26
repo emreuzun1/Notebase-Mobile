@@ -40,6 +40,7 @@ export const PdfViewer = styled(Pdf)({
   height: SCREEN_HEIGHT / 5,
   marginTop: 12,
   backgroundColor: 'transparent',
+  alignSelf: 'center',
 });
 
 export const ReviewContainer = styled(View)({

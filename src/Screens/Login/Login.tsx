@@ -17,9 +17,6 @@ import {
   RegisterButton,
   RegisterText,
 } from './Login.styles';
-import {passwordValidator, usernameValidator} from '../../utils/Regex';
-import {LoginInterface} from '../../Interfaces/Student';
-import {loginApi} from '../../lib/api';
 import {Background} from '../../components/Background/Background';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {requestLogin} from '../../redux/actions';
@@ -42,10 +39,12 @@ export const Login: FC<ILogin> = ({navigation}) => {
   const [password, setPassword] = useState<string>('');
   const {loading} = useAppSelector((state: State) => state.auth);
 
+  //Dispatches the login function
   const login = async () => {
     dispatch(requestLogin({username, password}));
   };
 
+  // If loading is true, indicator will show up in the screen.
   if (loading) {
     return (
       <Background style={{justifyContent: 'center', alignItems: 'center'}}>

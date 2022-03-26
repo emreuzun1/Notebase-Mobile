@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useEffect, useState} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -28,7 +29,9 @@ import {Header} from '../../components/Header/Header';
 import {Document as DocumentInterface} from '../../Interfaces/Document';
 import {Colors} from '../../constants/Colors';
 import {Student} from '../../Interfaces/Student';
-import {getStudentApi} from '../../lib/api';
+import {getStudentDownloadsApi} from '../../lib/api';
+import {useAppSelector} from '../../redux/hooks';
+import {State} from '../../Interfaces/State';
 
 type RouteProps = RouteProp<RootStackParamList, 'Document'>;
 type NavigationProps = NativeStackNavigationProp<
@@ -40,20 +43,30 @@ interface IDocument {
   route: RouteProps;
   navigation: NavigationProps;
 }
-
+/**
+ *
+ * @param navigation To navigate through screens.
+ * @param route To get the passed element from other screen.
+ * @returns the JSX Element for Document Screen.
+ */
 const Document: FC<IDocument> = ({route, navigation}) => {
   const document: Readonly<DocumentInterface> = route.params.item;
-  const [student, setStudent] = useState<Student>();
+  const student: Student | undefined = useAppSelector(
+    (state: State) => state.auth.student,
+  );
+  const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
 
-  const getStudent = async () => {
-    await getStudentApi(document.user).then(res => {
-      setStudent({user: res.data, token: ''});
+  // Checks for if the document is already taken or not.
+  const checkForTaken = async () => {
+    await getStudentDownloadsApi(student.user.id, student.token!).then(res => {
+      console.log(res);
     });
   };
 
+  //  Runs the function before screens rendered.
   useEffect(() => {
-    getStudent();
+    checkForTaken();
   }, []);
 
   return (
@@ -65,9 +78,6 @@ const Document: FC<IDocument> = ({route, navigation}) => {
           <SubTitle>{document.department}</SubTitle>
           <PdfViewer
             source={source}
-            onLoadComplete={numberOfPages => {
-              //console.log(`Number of pages: ${numberOfPages}`);
-            }}
             onError={error => {
               console.log(error);
             }}
@@ -101,9 +111,11 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             <DescriptionTitle>Description</DescriptionTitle>
             <DescriptionText>{document.description}</DescriptionText>
           </DescriptionContainer>
-          <TakeCourseButton>
-            <TakeCourseText>Take course</TakeCourseText>
-          </TakeCourseButton>
+          {isTaken && (
+            <TakeCourseButton>
+              <TakeCourseText>Take course</TakeCourseText>
+            </TakeCourseButton>
+          )}
         </Container>
       </Background>
     </SafeView>
