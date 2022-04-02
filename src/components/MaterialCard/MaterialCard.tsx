@@ -26,8 +26,8 @@ export const MaterialCard: FC<IMaterial> = ({item}) => {
       <View style={{flexDirection: 'row'}}>
         <Ionicons name="document-text" size={52} color={Colors.orange} />
         <View>
-          <MaterialName>{item.title}</MaterialName>
-          <MaterialCourseID>
+          <MaterialName numberOfLines={1}>{item.title}</MaterialName>
+          <MaterialCourseID numberOfLines={1}>
             {item.department} ({item.university})
           </MaterialCourseID>
         </View>

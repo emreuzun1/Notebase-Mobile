@@ -1,13 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Platform, Text} from 'react-native';
+import {Platform, Text, View, StyleSheet} from 'react-native';
 import {Formik} from 'formik';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {RootStackParamList} from '../../Navigation/Navigator';
 
 import {CustomTextInput} from '../../components/CustomTextInput/CustomTextInput';
 import {
+  Dropdown,
   Form,
   KeyboardAvoiding,
   NewText,
@@ -23,6 +25,9 @@ import {
 } from '../../utils/Regex';
 import {register} from '../../lib/api';
 import {Background} from '../../components/Background/Background';
+import {Faculties} from '../../constants/Faculty';
+import {Colors} from '../../constants/Colors';
+import {RegisterValues} from '../../Interfaces/Student';
 
 type RegisterProps = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -30,34 +35,27 @@ interface IRegister {
   navigation: RegisterProps;
 }
 
-interface FormValues {
-  email: string;
-  password: string;
-  username: string;
-  confirmPassword: string;
-  school: string;
-}
-
 /**
  * @param navigation: Navigation object for navigate through screens.
  * @returns a JSX Element that shows us the Register Screen.
  */
 export const Register: FC<IRegister> = ({navigation}) => {
-  const initialValues: FormValues = {
+  const [isFocus, setIsFocus] = useState(false);
+  const initialValues: RegisterValues = {
+    first_name: '',
+    second_name: '',
     email: '',
     username: '',
     password: '',
     confirmPassword: '',
+    department: '',
+    faculty: '',
     school: '',
   };
 
   // Register Function to dispatch values.
-  const registerF = async (values: FormValues) => {
-    await register({
-      email: values.email,
-      username: values.username,
-      password: values.password,
-    }).then(res => {
+  const registerF = async (values: RegisterValues) => {
+    await register(values).then(res => {
       if (res.status === 200) {
         navigation.goBack();
       }
@@ -84,41 +82,101 @@ export const Register: FC<IRegister> = ({navigation}) => {
         <Formik
           initialValues={initialValues}
           onSubmit={values => registerF(values)}>
-          {({handleChange, handleSubmit, values}) => (
-            <Form>
+          {({handleChange, handleSubmit, values, setFieldValue}) => (
+            <Form
+              contentContainerStyle={{
+                alignItems: 'center',
+                paddingLeft: 12,
+                paddingRight: 12,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  width: '100%',
+                }}>
+                <CustomTextInput
+                  containerStyle={{width: '45%'}}
+                  placeholder="First Name"
+                  icon="text"
+                  value={values.first_name}
+                  onChange={handleChange('first_name')}
+                />
+                <CustomTextInput
+                  containerStyle={{width: '45%'}}
+                  placeholder="Second Name"
+                  icon="text"
+                  value={values.second_name}
+                  onChange={handleChange('second_name')}
+                />
+              </View>
               <CustomTextInput
-                placeholder="Enter your username"
+                placeholder="Username"
                 icon="person-outline"
                 onChange={handleChange('username')}
                 value={values.username}
                 validator={usernameValidator}
               />
               <CustomTextInput
-                placeholder="Enter your mail"
+                placeholder="Mail"
                 icon="mail-outline"
                 validator={emailValidator}
                 onChange={handleChange('email')}
                 value={values.email}
               />
               <CustomTextInput
-                placeholder="Enter your password"
+                placeholder="Password"
                 validator={passwordValidator}
                 icon="lock-closed-outline"
                 onChange={handleChange('password')}
                 value={values.password}
+                secureText
               />
               <CustomTextInput
-                placeholder="Enter your password again"
+                secureText
+                placeholder="Confirm Password"
                 icon="lock-closed-outline"
                 validator={passwordValidator}
                 onChange={handleChange('confirmPassword')}
                 value={values.confirmPassword}
               />
               <CustomTextInput
-                placeholder="Enter your school"
+                placeholder="University"
                 icon="school-outline"
                 onChange={handleChange('school')}
                 value={values.school}
+              />
+              <Dropdown
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={[
+                  styles.selectedTextStyle,
+                  isFocus && {color: Colors.black},
+                ]}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={Faculties}
+                search
+                maxHeight={200}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocus ? 'Select faculty' : '...'}
+                searchPlaceholder="Search..."
+                value="faculty"
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={(item: any) => {
+                  setFieldValue('faculty', item);
+                  setIsFocus(false);
+                }}
+                renderLeftIcon={() => (
+                  <AntDesign color={Colors.white} name="menu-fold" size={24} />
+                )}
+              />
+              <CustomTextInput
+                placeholder="Department"
+                icon="school-outline"
+                onChange={handleChange('department')}
+                value={values.department}
               />
               <RegisterButton onPress={handleSubmit}>
                 <RegisterText>Register</RegisterText>
@@ -130,3 +188,26 @@ export const Register: FC<IRegister> = ({navigation}) => {
     </KeyboardAvoiding>
   );
 };
+
+const styles = StyleSheet.create({
+  placeholderStyle: {
+    fontSize: 18,
+    color: Colors.white,
+    fontFamily: 'Raleway',
+    marginLeft: 8,
+  },
+  selectedTextStyle: {
+    fontSize: 18,
+    color: Colors.white,
+    marginLeft: 8,
+    fontFamily: 'Raleway',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

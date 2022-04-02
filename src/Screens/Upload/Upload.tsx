@@ -59,22 +59,18 @@ export const Upload: FC<IUpload> = ({navigation}) => {
     user: student.user.id,
   });
   const [isFocus, setIsFocus] = useState(false);
-  const [pdf, setPdf] = useState<
-    DocumentPickerResponse | DirectoryPickerResponse | undefined | null
-  >(null);
 
   const handleDocumentSelection = async () => {
     const response = await DocumentPicker.pick({
       allowMultiSelection: false,
       type: [types.pdf],
     });
-    setPdf(response[0]);
     setDocument({...document, file: response[0]});
   };
 
   const createDocument = async () => {
     try {
-      await createDocumentApi(document, student.token, pdf).then(res => {
+      await createDocumentApi(document, student.token).then(res => {
         console.log(res);
       });
     } catch (err) {

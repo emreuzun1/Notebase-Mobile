@@ -9,6 +9,7 @@ interface TextInput {
   label?: string;
   placeholder?: string;
   secureText?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
   labelStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
   value?: string;
@@ -61,7 +62,7 @@ export const CustomTextInput: FC<TextInput> = props => {
   };
 
   return (
-    <Container style={{borderColor: color}}>
+    <Container style={[props.containerStyle, {borderColor: color}]}>
       {props.icon ? (
         <Ionicons name={props.icon} size={20} color={Colors.white} />
       ) : (

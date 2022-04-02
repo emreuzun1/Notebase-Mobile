@@ -1,15 +1,24 @@
-import {LoginInterface, RegisterInterface} from '../Interfaces/Student';
+import {LoginInterface, RegisterValues} from '../Interfaces/Student';
 import axios from 'axios';
 import {Document} from '../Interfaces/Document';
 
-export const register = (values: RegisterInterface) => {
+export const register = (values: RegisterValues) => {
+  const {
+    email,
+    username,
+    password,
+    first_name,
+    second_name,
+    department,
+    faculty,
+    school,
+  } = values;
   return axios({
     method: 'POST',
     url: 'https://notebase-api.herokuapp.com/api/student/register/',
     data: {
-      username: values.username,
-      email: values.email,
-      password: values.password,
+      username,
+      password,
     },
   });
 };
@@ -50,11 +59,7 @@ export const getStudentDownloadsApi = (id: string, token: string) => {
   });
 };
 
-export const createDocumentApi = async (
-  document: Document,
-  token: string,
-  pdf: any,
-) => {
+export const createDocumentApi = async (document: Document, token: string) => {
   const {user, title, description, university, course, file, date} = document;
   const formdata = new FormData();
   formdata.append('user', user);

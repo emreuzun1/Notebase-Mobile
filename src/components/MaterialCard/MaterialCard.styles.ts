@@ -19,10 +19,12 @@ export const MaterialName = styled(Text)({
   fontSize: 20,
   fontWeight: 'bold',
   color: Colors.white,
+  maxWidth: '100%',
   fontFamily: 'Raleway-Regular',
 });
 
 export const MaterialCourseID = styled(Text)({
+  maxWidth: '100%',
   fontSize: 14,
   fontWeight: '400',
   color: Colors.white,

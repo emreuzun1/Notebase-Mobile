@@ -103,11 +103,16 @@ export const DescriptionText = styled(Text)({
 });
 
 export const TakeCourseButton = styled(TouchableOpacity)({
-  width: 125,
   height: 40,
   alignItems: 'center',
   justifyContent: 'center',
   background: Colors.purple,
+  paddingBottom: 6,
+  paddingTop: 6,
+  paddingRight: 12,
+  paddingLeft: 12,
+  marginTop: 8,
+  borderRadius: 8,
 });
 
 export const TakeCourseText = styled(Text)({

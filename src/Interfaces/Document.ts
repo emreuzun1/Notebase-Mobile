@@ -1,3 +1,8 @@
+import {
+  DirectoryPickerResponse,
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
+
 export interface Document {
   id?: string;
   title: string;
@@ -9,7 +14,7 @@ export interface Document {
   like_count?: number;
   dislike_count?: number;
   report_count?: number;
-  file?: any;
+  file?: DocumentPickerResponse | DirectoryPickerResponse | undefined | null;
   date: string;
   user: string;
 }

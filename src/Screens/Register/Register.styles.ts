@@ -1,11 +1,14 @@
 import {
   Image,
   KeyboardAvoidingView,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import styled from 'styled-components';
+import {Dropdown as RNDropdown} from 'react-native-element-dropdown';
+
 import {Colors} from '../../constants/Colors';
 import {SCREEN_WIDTH} from '../../constants/Screen';
 
@@ -24,9 +27,9 @@ export const NewText = styled(Text)({
   color: Colors.white,
 });
 
-export const Form = styled(View)({
+export const Form = styled(ScrollView)({
   marginTop: 48,
-  alignItems: 'center',
+  width: SCREEN_WIDTH,
 });
 
 export const RegisterInfoText = styled(Text)({
@@ -48,4 +51,12 @@ export const RegisterButton = styled(TouchableOpacity)({
 export const RegisterText = styled(Text)({
   fontSize: 16,
   color: Colors.white,
+});
+
+export const Dropdown = styled(RNDropdown)({
+  width: SCREEN_WIDTH / 1.2,
+  height: 50,
+  borderColor: 'gray',
+  marginTop: 12,
+  paddingRight: 8,
 });
