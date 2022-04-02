@@ -8,7 +8,7 @@ import DocumentPicker, {
   types,
 } from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {KeyboardAvoidingView, Platform, StyleSheet, Text} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 
 import {Background} from '../../components/Background/Background';
 import {TabParamList} from '../../Navigation/Navigator';
@@ -18,6 +18,7 @@ import {
   DescriptionContainer,
   Dropdown,
   InputContainer,
+  PdfViewer,
   PickButton,
   TextInput,
   TitleInput,
@@ -30,6 +31,8 @@ import {Student} from '../../Interfaces/Student';
 import {useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
 import {Faculties} from '../../constants/Faculty';
+import {createDocumentApi} from '../../lib/api';
+import {Document} from '../../Interfaces/Document';
 
 type NavigationProp = NativeStackNavigationProp<TabParamList, 'Upload'>;
 
@@ -44,37 +47,39 @@ interface IUpload {
 
 export const Upload: FC<IUpload> = ({navigation}) => {
   const student: Student = useAppSelector((state: State) => state.auth.student);
-  const [title, setTitle] = useState<string>('Change Title');
-  const [university, setUniversity] = useState<string>(student.user.username);
-  const [value, setValue] = useState(null);
+  const [document, setDocument] = useState<Document>({
+    title: 'Change Title',
+    university: student.user.university,
+    department: student.user.department,
+    course: 'Course ID',
+    file: undefined,
+    description: '',
+    date: '',
+    faculty: student.user.faculty,
+    user: student.user.id,
+  });
   const [isFocus, setIsFocus] = useState(false);
-  const [result, setResult] = useState<
-    Array<DocumentPickerResponse> | DirectoryPickerResponse | undefined | null
-  >();
+  const [pdf, setPdf] = useState<
+    DocumentPickerResponse | DirectoryPickerResponse | undefined | null
+  >(null);
 
-  const handleDocumentSelection = useCallback(async () => {
+  const handleDocumentSelection = async () => {
+    const response = await DocumentPicker.pick({
+      allowMultiSelection: false,
+      type: [types.pdf],
+    });
+    setPdf(response[0]);
+    setDocument({...document, file: response[0]});
+  };
+
+  const createDocument = async () => {
     try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        allowMultiSelection: false,
-        type: [types.pdf],
+      await createDocumentApi(document, student.token, pdf).then(res => {
+        console.log(res);
       });
-      setResult(response);
-      console.log(result);
     } catch (err) {
       console.log(err);
     }
-  }, []);
-
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
   };
 
   return (
@@ -84,13 +89,19 @@ export const Upload: FC<IUpload> = ({navigation}) => {
       <Background>
         <Container contentContainerStyle={{alignItems: 'center'}}>
           <TitleInput
-            value={title}
-            onChangeText={val => setTitle(val)}
+            value={document.title}
+            onChangeText={val => setDocument({...document, title: val})}
             maxLength={32}
           />
           <InputContainer>
             <Ionicons name="school" size={24} color={Colors.white} />
-            <TextInput value={university} placeholder="University name" />
+            <TextInput
+              value={document.university}
+              placeholder="University name"
+              onChangeText={text =>
+                setDocument({...document, university: text})
+              }
+            />
           </InputContainer>
           <Dropdown
             placeholderStyle={styles.placeholderStyle}
@@ -107,28 +118,37 @@ export const Upload: FC<IUpload> = ({navigation}) => {
             valueField="value"
             placeholder={!isFocus ? 'Select faculty' : '...'}
             searchPlaceholder="Search..."
-            value={value}
+            value={document.faculty}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              setValue(item.value);
+              setDocument({...document, faculty: item});
               setIsFocus(false);
             }}
             renderLeftIcon={() => (
               <AntDesign color={Colors.white} name="menu-fold" size={24} />
             )}
           />
-          <CustomTextInput placeholder="Write the department that note is belong" />
+          <CustomTextInput
+            value={document.department}
+            placeholder="Write the department that note is belong"
+            onChange={val => setDocument({...document, department: val})}
+          />
           <DescriptionContainer
             textAlignVertical="top"
             multiline={true}
             placeholder="Description"
             placeholderTextColor={Colors.white}
+            value={document.description}
+            onChangeText={text => setDocument({...document, description: text})}
           />
           <PickButton onPress={handleDocumentSelection}>
             <Ionicons name="cloud-upload" size={32} color={Colors.white} />
           </PickButton>
-          <UploadButton>
+          <UploadButton
+            onPress={() => {
+              createDocument();
+            }}>
             <UploadText>Upload</UploadText>
           </UploadButton>
         </Container>
@@ -142,6 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.white,
     fontFamily: 'Raleway',
+    marginLeft: 8,
   },
   selectedTextStyle: {
     fontSize: 18,

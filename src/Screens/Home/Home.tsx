@@ -20,6 +20,7 @@ import {getDocuments} from '../../redux/reducers/selector';
 import {useSelector} from 'react-redux';
 import {Header} from '../../components/Header/Header';
 import {RootStackParamList} from '../../Navigation/Navigator';
+import {Document} from '../../Interfaces/Document';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -63,9 +64,9 @@ export const Home: FC<IHome> = ({navigation}) => {
             <ListTitle>Materials for you</ListTitle>
           </ListTitleContainer>
           <FlatList
-            horizontal
             style={{marginTop: 8}}
             data={data}
+            keyExtractor={(item: Document) => item.id!}
             renderItem={({item}) => <MaterialCard item={item} />}
           />
         </ListContainer>

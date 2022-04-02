@@ -5,12 +5,13 @@ import {SCREEN_WIDTH} from '../../constants/Screen';
 
 export const Container = styled(TouchableOpacity)({
   width: SCREEN_WIDTH / 1.1,
-  alignItems: 'center',
   backgroundColor: '#171717',
+  marginTop: 12,
   marginLeft: 8,
   paddingTop: 12,
   paddingBottom: 6,
   paddingRight: 12,
+  paddingLeft: 12,
   borderRadius: 12,
 });
 

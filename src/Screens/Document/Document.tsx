@@ -43,6 +43,16 @@ interface IDocument {
   route: RouteProps;
   navigation: NavigationProps;
 }
+
+interface Download {
+  id: string;
+  has_liked: boolean;
+  has_disliked: boolean;
+  has_reported: boolean;
+  date: string;
+  user: string;
+  document: string;
+}
 /**
  *
  * @param navigation To navigate through screens.
@@ -51,16 +61,22 @@ interface IDocument {
  */
 const Document: FC<IDocument> = ({route, navigation}) => {
   const document: Readonly<DocumentInterface> = route.params.item;
+  const [downloaded, setDownloaded] = useState<Download>();
   const student: Student | undefined = useAppSelector(
     (state: State) => state.auth.student,
   );
   const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
 
-  // Checks for if the document is already taken or not.
+  // Checks if the document is already taken or not.
   const checkForTaken = async () => {
     await getStudentDownloadsApi(student.user.id, student.token!).then(res => {
-      console.log(res);
+      res.data.map((download: Download) => {
+        if (download.document === document.id) {
+          setIsTaken(true);
+          setDownloaded(download);
+        }
+      });
     });
   };
 
@@ -85,11 +101,24 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             horizontal
           />
           <ReviewContainer>
-            <Ionicons name="heart" size={24} color={Colors.purple} />
+            <Ionicons
+              name="heart"
+              size={24}
+              color={downloaded?.has_liked ? Colors.purple : Colors.white}
+              onPress={() => console.log('Liked')}
+            />
             <ReviewText>{document.like_count}</ReviewText>
-            <Ionicons name="heart-dislike" size={24} color={Colors.orange} />
+            <Ionicons
+              name="heart-dislike"
+              size={24}
+              color={downloaded?.has_disliked ? Colors.orange : Colors.white}
+            />
             <ReviewText>{document.like_count}</ReviewText>
-            <MaterialIcons name="report" size={24} color={Colors.white} />
+            <MaterialIcons
+              name="report"
+              size={24}
+              color={downloaded?.has_reported ? Colors.red : Colors.white}
+            />
             <ReviewText>{document.like_count}</ReviewText>
           </ReviewContainer>
           <AboutContainer>
@@ -111,9 +140,9 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             <DescriptionTitle>Description</DescriptionTitle>
             <DescriptionText>{document.description}</DescriptionText>
           </DescriptionContainer>
-          {isTaken && (
+          {!isTaken && (
             <TakeCourseButton>
-              <TakeCourseText>Take course</TakeCourseText>
+              <TakeCourseText>Take Document</TakeCourseText>
             </TakeCourseButton>
           )}
         </Container>

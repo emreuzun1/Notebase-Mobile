@@ -15,6 +15,20 @@ export interface Student {
     username: string;
     email: string;
     password: string;
+    last_login: string;
+    is_superuser: boolean;
+    first_name: string;
+    şast_Name: string;
+    date_joined: string;
+    is_staff: boolean;
+    is_active: boolean;
+    university: string;
+    faculty: string;
+    department: string;
+    point: number;
+    date: string;
+    groups: any;
+    user_permissions: any;
   };
   token: string;
 }

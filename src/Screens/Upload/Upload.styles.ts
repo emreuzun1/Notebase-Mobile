@@ -9,7 +9,8 @@ import styled from 'styled-components';
 import {Dropdown as RNDropdown} from 'react-native-element-dropdown';
 
 import {Colors} from '../../constants/Colors';
-import {SCREEN_WIDTH} from '../../constants/Screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants/Screen';
+import Pdf from 'react-native-pdf';
 
 export const Container = styled(ScrollView)({
   flex: 1,
@@ -58,7 +59,7 @@ export const DescriptionContainer = styled(RNTextInput)({
   marginBottom: 24,
   color: Colors.white,
   padding: 12,
-  fontSize: 24,
+  fontSize: 18,
 });
 
 export const PickButton = styled(TouchableOpacity)({
@@ -70,6 +71,14 @@ export const PickButton = styled(TouchableOpacity)({
   borderColor: Colors.white,
   alignItems: 'center',
   justifyContent: 'center',
+});
+
+export const PdfViewer = styled(Pdf)({
+  width: '100%',
+  height: SCREEN_HEIGHT / 5,
+  marginTop: 12,
+  backgroundColor: 'transparent',
+  alignSelf: 'center',
 });
 
 export const UploadButton = styled(TouchableOpacity)({

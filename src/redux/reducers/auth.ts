@@ -10,7 +10,7 @@ interface ActionInterface {
 
 const initialState: StudentState = {
   loading: false,
-  student: undefined,
+  student: {},
   errorMessage: '',
 };
 
