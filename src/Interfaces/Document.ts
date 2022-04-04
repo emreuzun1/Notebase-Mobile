@@ -2,6 +2,7 @@ import {
   DirectoryPickerResponse,
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import {Student} from './Student';
 
 export interface Document {
   id?: string;
@@ -16,7 +17,7 @@ export interface Document {
   report_count?: number;
   file?: DocumentPickerResponse | DirectoryPickerResponse | undefined | null;
   date: string;
-  user: string;
+  user: string | Student;
 }
 
 export interface DocumentState {

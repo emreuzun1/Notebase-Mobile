@@ -29,7 +29,11 @@ import {Header} from '../../components/Header/Header';
 import {Document as DocumentInterface} from '../../Interfaces/Document';
 import {Colors} from '../../constants/Colors';
 import {Student} from '../../Interfaces/Student';
-import {getStudentDownloadsApi} from '../../lib/api';
+import {
+  createDownloadApi,
+  getStudentApi,
+  getStudentDownloadsApi,
+} from '../../lib/api';
 import {useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
 
@@ -61,6 +65,7 @@ interface Download {
  */
 const Document: FC<IDocument> = ({route, navigation}) => {
   const document: Readonly<DocumentInterface> = route.params.item;
+  const [author, setAuthor] = useState<Student>();
   const [downloaded, setDownloaded] = useState<Download>();
   const student: Student | undefined = useAppSelector(
     (state: State) => state.auth.student,
@@ -80,9 +85,25 @@ const Document: FC<IDocument> = ({route, navigation}) => {
     });
   };
 
+  const takeDocument = async () => {
+    await createDownloadApi(student.user.id, student.token!, document.id!).then(
+      () => {
+        checkForTaken();
+      },
+    );
+  };
+
+  const getAuthor = async () => {
+    await getStudentApi(document.user).then(res => {
+      setAuthor(res.data);
+      console.log('Author : ', author);
+    });
+  };
+
   //  Runs the function before screens rendered.
   useEffect(() => {
     checkForTaken();
+    getAuthor();
   }, []);
 
   return (
@@ -129,7 +150,7 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             </AboutDetailContainer>
             <AboutDetailContainer>
               <Ionicons name="pencil" size={24} color={Colors.white} />
-              <DetailText>{student?.user.username}</DetailText>
+              {/* <DetailText>{author?.user.first_name}</DetailText> */}
             </AboutDetailContainer>
             <AboutDetailContainer>
               <Ionicons name="time-outline" size={24} color={Colors.white} />
@@ -141,7 +162,7 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             <DescriptionText>{document.description}</DescriptionText>
           </DescriptionContainer>
           {!isTaken && (
-            <TakeCourseButton>
+            <TakeCourseButton onPress={takeDocument}>
               <TakeCourseText>Take Document</TakeCourseText>
             </TakeCourseButton>
           )}

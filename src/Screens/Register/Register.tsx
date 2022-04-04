@@ -43,14 +43,14 @@ export const Register: FC<IRegister> = ({navigation}) => {
   const [isFocus, setIsFocus] = useState(false);
   const initialValues: RegisterValues = {
     first_name: '',
-    second_name: '',
+    last_name: '',
     email: '',
     username: '',
     password: '',
     confirmPassword: '',
     department: '',
     faculty: '',
-    school: '',
+    university: '',
   };
 
   // Register Function to dispatch values.
@@ -106,8 +106,8 @@ export const Register: FC<IRegister> = ({navigation}) => {
                   containerStyle={{width: '45%'}}
                   placeholder="Second Name"
                   icon="text"
-                  value={values.second_name}
-                  onChange={handleChange('second_name')}
+                  value={values.last_name}
+                  onChange={handleChange('last_name')}
                 />
               </View>
               <CustomTextInput
@@ -143,8 +143,8 @@ export const Register: FC<IRegister> = ({navigation}) => {
               <CustomTextInput
                 placeholder="University"
                 icon="school-outline"
-                onChange={handleChange('school')}
-                value={values.school}
+                onChange={handleChange('university')}
+                value={values.university}
               />
               <Dropdown
                 placeholderStyle={styles.placeholderStyle}

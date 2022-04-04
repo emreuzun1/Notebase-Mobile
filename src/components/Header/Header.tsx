@@ -16,7 +16,14 @@ interface IHeader {
 export const Header: FC<IHeader> = ({navigation, searchShown}) => {
   return (
     <HeaderBar>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        onPress={() => {
+          if (navigation.getState().index === 0) {
+            navigation.navigate('Login');
+            return;
+          }
+          navigation.goBack();
+        }}>
         <Entypo name="chevron-thin-left" size={24} color={Colors.white} />
       </TouchableOpacity>
 

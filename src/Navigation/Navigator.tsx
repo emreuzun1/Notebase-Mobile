@@ -5,8 +5,8 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 import {Login} from '../Screens/Login/Login';
 import {Register} from '../Screens/Register/Register';
@@ -18,6 +18,7 @@ import {navigationRef} from './RootNavigation';
 import {Document} from '../Interfaces/Document';
 import DocumentScreen from '../Screens/Document/Document';
 import {Search} from '../Screens/Search/Search';
+import {Settings} from '../Screens/Settings/Settings';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Search: undefined;
   Document: Document;
   Upload: undefined;
+  Settings: undefined;
 };
 
 export type TabParamList = {
@@ -34,32 +36,29 @@ export type TabParamList = {
   Upload: undefined;
 };
 
-const Tab = createBottomTabNavigator<TabParamList>();
+const Tab = createMaterialBottomTabNavigator<TabParamList>();
 
 const TabNavigator = () => {
   const {Navigator, Screen} = Tab;
   return (
     <Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          position: 'absolute',
-          height: 64,
-          backgroundColor: Colors.black,
-          borderTopWidth: 0,
-          ...styles.shadow,
-        },
-        tabBarShowLabel: false,
+      initialRouteName="Home"
+      shifting
+      backBehavior="history"
+      // eslint-disable-next-line react-native/no-inline-styles
+      barStyle={{
+        height: 64,
+        backgroundColor: Colors.black,
       }}>
       <Screen
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({focused, size}) => {
+          tabBarIcon: ({focused}) => {
             return (
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
-                size={size}
+                size={24}
                 color={focused ? Colors.purple : Colors.white}
               />
             );
@@ -70,14 +69,14 @@ const TabNavigator = () => {
         name="Upload"
         component={Upload}
         options={{
-          tabBarIcon: ({focused, size}) => {
+          tabBarIcon: ({focused}) => {
             return (
               <View
                 style={[
                   styles.addButton,
                   {backgroundColor: focused ? Colors.purple : Colors.orange},
                 ]}>
-                <Ionicons name="add" size={size} color={Colors.black} />
+                <Ionicons name="add" size={24} color={Colors.black} />
               </View>
             );
           },
@@ -87,11 +86,11 @@ const TabNavigator = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({focused, size}) => {
+          tabBarIcon: ({focused}) => {
             return (
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
-                size={size}
+                size={24}
                 color={focused ? Colors.purple : Colors.white}
               />
             );
@@ -119,6 +118,7 @@ const MainNavigator = () => {
       <Screen name="Document" component={DocumentScreen} />
       <Screen name="Upload" component={Upload} />
       <Screen name="Search" component={Search} />
+      <Screen name="Settings" component={Settings} />
     </Navigator>
   );
 };

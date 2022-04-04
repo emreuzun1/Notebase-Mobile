@@ -1,4 +1,4 @@
-import {LoginInterface, RegisterValues} from '../Interfaces/Student';
+import {LoginInterface, RegisterValues, Student} from '../Interfaces/Student';
 import axios from 'axios';
 import {Document} from '../Interfaces/Document';
 
@@ -8,18 +8,23 @@ export const register = (values: RegisterValues) => {
     username,
     password,
     first_name,
-    second_name,
+    last_name,
     department,
     faculty,
-    school,
+    university,
   } = values;
-  return axios({
+  const formdata = new FormData();
+  formdata.append('email', email);
+  formdata.append('username', username);
+  formdata.append('password', password);
+  formdata.append('first_name', first_name);
+  formdata.append('last_name', last_name);
+  formdata.append('university', university);
+  formdata.append('department', department);
+  formdata.append('faculty', faculty);
+  return fetch('https://notebase-api.herokuapp.com/api/student/register/', {
     method: 'POST',
-    url: 'https://notebase-api.herokuapp.com/api/student/register/',
-    data: {
-      username,
-      password,
-    },
+    body: formdata,
   });
 };
 
@@ -44,19 +49,19 @@ export const getDocumentsApi = (token: string) => {
   });
 };
 
-export const getStudentApi = (id: string) => {
+export const getStudentApi = (id: string | Student) => {
   return axios.get(`https://notebase-api.herokuapp.com/api/student/get/${id}`);
 };
 
 export const getStudentDownloadsApi = (id: string, token: string) => {
-  return axios.get(`https://notebase-api.herokuapp.com/api/download/get/`, {
-    params: {
-      user: id,
+  return axios.get(
+    `https://notebase-api.herokuapp.com/api/download/get/${id}`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
     },
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+  );
 };
 
 export const createDocumentApi = async (document: Document, token: string) => {
@@ -77,4 +82,30 @@ export const createDocumentApi = async (document: Document, token: string) => {
       'Content-Type': 'multipart/form-data',
     },
   }).then(res => console.log(res));
+};
+
+export const getStudentDocuments = (id: string, token: string) => {
+  return axios.get(`https://notebase-api.herokuapp.com/api/document/${id}`, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const createDownloadApi = (
+  userId: string,
+  token: string,
+  documentId: string,
+) => {
+  return axios({
+    method: 'POST',
+    url: 'https://notebase-api.herokuapp.com/api/download/create/',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+    data: {
+      user: userId,
+      document: documentId,
+    },
+  });
 };

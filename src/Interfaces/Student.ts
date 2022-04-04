@@ -1,13 +1,13 @@
 export interface RegisterValues {
   first_name: string;
-  second_name: string;
+  last_name: string;
   email: string;
   password: string;
   username: string;
   confirmPassword: string;
   department: string;
   faculty: string;
-  school: string;
+  university: string;
 }
 
 export interface LoginInterface {
@@ -24,7 +24,7 @@ export interface Student {
     last_login: string;
     is_superuser: boolean;
     first_name: string;
-    şast_Name: string;
+    last_name: string;
     date_joined: string;
     is_staff: boolean;
     is_active: boolean;
