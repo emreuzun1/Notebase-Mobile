@@ -50,18 +50,16 @@ export const getDocumentsApi = (token: string) => {
 };
 
 export const getStudentApi = (id: string | Student) => {
+  console.log(id);
   return axios.get(`https://notebase-api.herokuapp.com/api/student/get/${id}`);
 };
 
-export const getStudentDownloadsApi = (id: string, token: string) => {
-  return axios.get(
-    `https://notebase-api.herokuapp.com/api/download/get/${id}`,
-    {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
+export const getStudentDownloadsApi = (token: string) => {
+  return axios.get(`https://notebase-api.herokuapp.com/api/download/get/`, {
+    headers: {
+      Authorization: `Token ${token}`,
     },
-  );
+  });
 };
 
 export const createDocumentApi = async (document: Document, token: string) => {
@@ -107,5 +105,42 @@ export const createDownloadApi = (
       user: userId,
       document: documentId,
     },
+  });
+};
+
+export const updateStudent = (student: Student) => {
+  const {id, username, faculty, university, first_name, last_name, password} =
+    student.user;
+
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('faculty', faculty);
+  formData.append('password', password);
+  formData.append('university', university);
+  formData.append('first_name', first_name);
+  formData.append('last_name', last_name);
+
+  return fetch(`https://notebase-api.herokuapp.com/api/student/edit/${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${student.token}`,
+    },
+    body: formData,
+  });
+};
+
+export const updateStudentPoint = (student: Student, point: number) => {
+  const {id, username, password} = student.user;
+
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);
+  formData.append('point', point);
+  return fetch(`https://notebase-api.herokuapp.com/api/student/edit/${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${student.token}`,
+    },
+    body: formData,
   });
 };

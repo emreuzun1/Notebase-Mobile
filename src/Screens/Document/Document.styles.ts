@@ -102,8 +102,9 @@ export const DescriptionText = styled(Text)({
   marginTop: 8,
 });
 
-export const TakeCourseButton = styled(TouchableOpacity)({
+export const Button = styled(TouchableOpacity)({
   height: 40,
+  flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
   background: Colors.purple,
@@ -115,7 +116,7 @@ export const TakeCourseButton = styled(TouchableOpacity)({
   borderRadius: 8,
 });
 
-export const TakeCourseText = styled(Text)({
+export const ButtonText = styled(Text)({
   fontSize: 18,
   fontFamily: 'Raleway',
   fontWeight: 'bold',

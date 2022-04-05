@@ -19,6 +19,7 @@ import {Document} from '../Interfaces/Document';
 import DocumentScreen from '../Screens/Document/Document';
 import {Search} from '../Screens/Search/Search';
 import {Settings} from '../Screens/Settings/Settings';
+import {Viewer} from '../Screens/Viewer/Viewer';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   Document: Document;
   Upload: undefined;
   Settings: undefined;
+  Viewer: Document;
 };
 
 export type TabParamList = {
@@ -119,6 +121,7 @@ const MainNavigator = () => {
       <Screen name="Upload" component={Upload} />
       <Screen name="Search" component={Search} />
       <Screen name="Settings" component={Settings} />
+      <Screen name="Viewer" component={Viewer} />
     </Navigator>
   );
 };

@@ -11,6 +11,7 @@ import {HeaderBar} from './Header.styles';
 interface IHeader {
   navigation: NavigationProp<RootStackParamList>;
   searchShown?: boolean;
+  title?: string;
 }
 
 export const Header: FC<IHeader> = ({navigation, searchShown}) => {
@@ -26,7 +27,6 @@ export const Header: FC<IHeader> = ({navigation, searchShown}) => {
         }}>
         <Entypo name="chevron-thin-left" size={24} color={Colors.white} />
       </TouchableOpacity>
-
       {searchShown && (
         <TouchableOpacity onPress={() => navigation.navigate('Search')}>
           <Ionicons name="search" size={24} color={Colors.white} />

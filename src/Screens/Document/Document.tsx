@@ -4,12 +4,16 @@ import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-toast-message';
 
 import {Background} from '../../components/Background/Background';
 import {
   AboutContainer,
   AboutDetailContainer,
   AboutText,
+  Button,
+  ButtonText,
   Container,
   DescriptionContainer,
   DescriptionText,
@@ -20,8 +24,6 @@ import {
   ReviewText,
   SafeView,
   SubTitle,
-  TakeCourseButton,
-  TakeCourseText,
   Title,
 } from './Document.styles';
 import {RootStackParamList} from '../../Navigation/Navigator';
@@ -33,6 +35,7 @@ import {
   createDownloadApi,
   getStudentApi,
   getStudentDownloadsApi,
+  updateStudentPoint,
 } from '../../lib/api';
 import {useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
@@ -57,6 +60,7 @@ interface Download {
   user: string;
   document: string;
 }
+
 /**
  *
  * @param navigation To navigate through screens.
@@ -65,19 +69,24 @@ interface Download {
  */
 const Document: FC<IDocument> = ({route, navigation}) => {
   const document: Readonly<DocumentInterface> = route.params.item;
-  const [author, setAuthor] = useState<Student>();
+
+  const [author, setAuthor] = useState<any>();
   const [downloaded, setDownloaded] = useState<Download>();
   const student: Student | undefined = useAppSelector(
     (state: State) => state.auth.student,
   );
+  const [newStudent, setNewStudent] = useState<Student>(student);
   const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
 
   // Checks if the document is already taken or not.
   const checkForTaken = async () => {
-    await getStudentDownloadsApi(student.user.id, student.token!).then(res => {
+    await getStudentDownloadsApi(student.token!).then(res => {
       res.data.map((download: Download) => {
-        if (download.document === document.id) {
+        if (
+          download.document === document.id &&
+          download.user === student.user.id
+        ) {
           setIsTaken(true);
           setDownloaded(download);
         }
@@ -85,18 +94,34 @@ const Document: FC<IDocument> = ({route, navigation}) => {
     });
   };
 
+  const updatePoint = async () => {
+    await updateStudentPoint(student, student.user.point - 5).then(() => {
+      checkForTaken();
+    });
+  };
+
   const takeDocument = async () => {
-    await createDownloadApi(student.user.id, student.token!, document.id!).then(
-      () => {
-        checkForTaken();
-      },
-    );
+    if (student.user.point > 5) {
+      await createDownloadApi(
+        student.user.id,
+        student.token!,
+        document.id!,
+      ).then(() => {
+        updatePoint();
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Something went wrong!',
+        position: 'bottom',
+      });
+    }
   };
 
   const getAuthor = async () => {
     await getStudentApi(document.user).then(res => {
       setAuthor(res.data);
-      console.log('Author : ', author);
     });
   };
 
@@ -150,7 +175,7 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             </AboutDetailContainer>
             <AboutDetailContainer>
               <Ionicons name="pencil" size={24} color={Colors.white} />
-              {/* <DetailText>{author?.user.first_name}</DetailText> */}
+              <DetailText>{author?.first_name}</DetailText>
             </AboutDetailContainer>
             <AboutDetailContainer>
               <Ionicons name="time-outline" size={24} color={Colors.white} />
@@ -161,10 +186,21 @@ const Document: FC<IDocument> = ({route, navigation}) => {
             <DescriptionTitle>Description</DescriptionTitle>
             <DescriptionText>{document.description}</DescriptionText>
           </DescriptionContainer>
-          {!isTaken && (
-            <TakeCourseButton onPress={takeDocument}>
-              <TakeCourseText>Take Document</TakeCourseText>
-            </TakeCourseButton>
+          {!isTaken ? (
+            <Button onPress={takeDocument}>
+              <ButtonText>Take Document</ButtonText>
+              <ButtonText>{'  '}5</ButtonText>
+              <MaterialCommunityIcon
+                name="star-four-points"
+                size={20}
+                color={Colors.orange}
+                style={{marginLeft: 4}}
+              />
+            </Button>
+          ) : (
+            <Button onPress={() => navigation.navigate('Viewer', document)}>
+              <ButtonText>Open PDF</ButtonText>
+            </Button>
           )}
         </Container>
       </Background>

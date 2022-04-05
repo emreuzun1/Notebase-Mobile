@@ -1,6 +1,7 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import styled from 'styled-components';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Dropdown as RNDropdown} from 'react-native-element-dropdown';
 
 import {Colors} from '../../constants/Colors';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants/Screen';
@@ -9,7 +10,7 @@ export const TopContainer = styled(View)({
   height: SCREEN_HEIGHT / 3,
 });
 
-export const Icon = styled(Ionicons)({
+export const Icon = styled(MaterialIcon)({
   alignSelf: 'flex-end',
   margin: 12,
 });
@@ -21,7 +22,7 @@ export const ProfileWrapper = styled(View)({
   marginTop: 24,
 });
 
-export const NameText = styled(Text)({
+export const NameText = styled(TextInput)({
   color: Colors.white,
   fontSize: 24,
   fontWeight: 700,
@@ -33,6 +34,14 @@ export const SchoolText = styled(Text)({
   fontWeight: 500,
   color: Colors.white,
   marginTop: 8,
+});
+
+export const Dropdown = styled(RNDropdown)({
+  width: SCREEN_WIDTH / 1.2,
+  height: 50,
+  borderColor: 'gray',
+  marginTop: 12,
+  paddingRight: 8,
 });
 
 export const DepartmentText = styled(Text)({

@@ -26,6 +26,10 @@ export default (state = initialState, action: ActionInterface) =>
         draft.loading = false;
         break;
       }
+      case type.USER_LOGIN_FAIL: {
+        draft.loading = false;
+        break;
+      }
       case type.USER_REGISTER_REQUEST: {
         draft.loading = true;
         break;

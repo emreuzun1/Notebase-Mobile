@@ -8,7 +8,7 @@ export const HeaderBar = styled(View)({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+  justifyContent: 'space-between',
   paddingLeft: 12,
   paddingRight: 12,
-  justifyContent: 'space-between',
 });

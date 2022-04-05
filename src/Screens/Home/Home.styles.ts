@@ -49,3 +49,9 @@ export const ViewText = styled(Text)({
   fontWeight: '400',
   color: Colors.purple,
 });
+
+export const PointText = styled(Text)({
+  fontSize: 20,
+  color: Colors.white,
+  fontFamily: 'Raleway',
+});

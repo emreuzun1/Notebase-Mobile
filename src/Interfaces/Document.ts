@@ -15,7 +15,7 @@ export interface Document {
   like_count?: number;
   dislike_count?: number;
   report_count?: number;
-  file?: DocumentPickerResponse | DirectoryPickerResponse | undefined | null;
+  file?: DocumentPickerResponse | DirectoryPickerResponse | undefined;
   date: string;
   user: string | Student;
 }
