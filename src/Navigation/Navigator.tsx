@@ -127,13 +127,13 @@ const MainNavigator = () => {
 };
 
 //Navigation Container for App
-export const Navigation = () => {
+export function Navigation() {
   return (
     <NavigationContainer ref={navigationRef}>
       <MainNavigator />
     </NavigationContainer>
   );
-};
+}
 
 const styles = StyleSheet.create({
   shadow: {

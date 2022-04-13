@@ -43,4 +43,5 @@ export interface StudentState {
   loading: boolean;
   student: Student;
   errorMessage: string;
+  status: number;
 }

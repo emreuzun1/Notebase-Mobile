@@ -3,7 +3,7 @@ import * as type from '../types';
 import produce from 'immer';
 
 interface ActionInterface {
-  payload: Student;
+  payload: {student: Student; status: number};
   type: string;
   error: string;
 }
@@ -12,6 +12,7 @@ const initialState: StudentState = {
   loading: false,
   student: {},
   errorMessage: '',
+  status: 0,
 };
 
 export default (state = initialState, action: ActionInterface) =>
@@ -22,7 +23,8 @@ export default (state = initialState, action: ActionInterface) =>
         break;
       }
       case type.USER_LOGIN_SUCCESS: {
-        draft.student = action.payload;
+        draft.student = action.payload.student;
+        draft.status = action.payload.status;
         draft.loading = false;
         break;
       }

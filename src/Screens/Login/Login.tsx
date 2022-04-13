@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, Platform, Text, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../Navigation/Navigator';
@@ -25,7 +25,7 @@ import {State} from '../../Interfaces/State';
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 interface ILogin {
-  navigation: LoginProps;
+  navigation: LoginProps | any;
 }
 
 /**
@@ -33,17 +33,23 @@ interface ILogin {
  * @param navigation: Navigation object for navigate through screens.
  * @returns a JSX Element that shows us the Login Screen.
  */
-export const Login: FC<ILogin> = ({navigation}) => {
+const Login = (props: ILogin) => {
   const dispatch = useAppDispatch();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const {loading} = useAppSelector((state: State) => state.auth);
+  const {loading, status} = useAppSelector((state: State) => state.auth);
 
   //Dispatches the login function
-  const login = async () => {
-    dispatch(requestLogin({username, password}));
+  const login = () => {
+    dispatch(requestLogin({username, password}, props.navigation));
   };
 
+  /*   useMemo(() => {
+    if (status === 200) {
+      navigation.navigate('Home');
+    }
+  }, [dispatch, status]);
+ */
   // If loading is true, indicator will show up in the screen.
   if (loading) {
     return (
@@ -64,7 +70,7 @@ export const Login: FC<ILogin> = ({navigation}) => {
           source={require('../../assets/notebase.png')}
           resizeMode="contain"
         />
-        <NewText>
+        <NewText testID="welcomeText">
           Welcome to{' '}
           <Text style={{color: '#59417D', fontFamily: 'Raleway-Semibold'}}>
             Note<Text style={{color: '#E69B69'}}>base</Text>
@@ -98,10 +104,12 @@ export const Login: FC<ILogin> = ({navigation}) => {
             </Text>
           </ForgotText>
         </View>
-        <LoginButton onPress={() => login()}>
+        <LoginButton onPress={() => login()} testID="loginButton">
           <LoginText>Login</LoginText>
         </LoginButton>
-        <RegisterButton onPress={() => navigation.navigate('Register')}>
+        <RegisterButton
+          onPress={() => props.navigation.navigate('Register')}
+          testID="registerButton">
           <RegisterText>
             Don't you have an account?
             <Text
@@ -119,3 +127,5 @@ export const Login: FC<ILogin> = ({navigation}) => {
     </KeyboardAvoiding>
   );
 };
+
+export default Login;

@@ -13,19 +13,22 @@ import {
 
 interface SagaStudentInterface {
   type: string;
-  payload: RegisterValues | LoginInterface;
+  payload: RegisterValues | LoginInterface | any;
 }
 
 function* userLogin(action: SagaStudentInterface) {
   try {
-    const {username, password} = action.payload;
+    const {username, password, navigation} = action.payload;
     const {
       data: {user, token},
       status,
     } = yield call(loginApi, {username, password});
     if (status === 200) {
-      yield put({type: type.USER_LOGIN_SUCCESS, payload: {user, token}});
-      RootNavigation.navigate('Home', {});
+      yield put({
+        type: type.USER_LOGIN_SUCCESS,
+        payload: {student: {user, token}, status: status},
+      });
+      navigation.navigate('Home');
       Toast.show({
         type: 'success',
         text1: 'Logged in',
