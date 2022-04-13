@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Platform, Text, View, StyleSheet} from 'react-native';
 import {Formik} from 'formik';
@@ -32,14 +32,14 @@ import {RegisterValues} from '../../Interfaces/Student';
 type RegisterProps = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
 interface IRegister {
-  navigation: RegisterProps;
+  navigation: RegisterProps | any;
 }
 
 /**
  * @param navigation: Navigation object for navigate through screens.
  * @returns a JSX Element that shows us the Register Screen.
  */
-export const Register: FC<IRegister> = ({navigation}) => {
+const Register = (props: IRegister) => {
   const [isFocus, setIsFocus] = useState(false);
   const initialValues: RegisterValues = {
     first_name: '',
@@ -57,7 +57,7 @@ export const Register: FC<IRegister> = ({navigation}) => {
   const registerF = async (values: RegisterValues) => {
     await register(values).then(res => {
       if (res.status === 200) {
-        navigation.goBack();
+        props.navigation.goBack();
       }
     });
   };
@@ -104,7 +104,7 @@ export const Register: FC<IRegister> = ({navigation}) => {
                 />
                 <CustomTextInput
                   containerStyle={{width: '45%'}}
-                  placeholder="Second Name"
+                  placeholder="Last Name"
                   icon="text"
                   value={values.last_name}
                   onChange={handleChange('last_name')}
@@ -169,7 +169,12 @@ export const Register: FC<IRegister> = ({navigation}) => {
                   setIsFocus(false);
                 }}
                 renderLeftIcon={() => (
-                  <AntDesign color={Colors.white} name="menu-fold" size={24} />
+                  <AntDesign
+                    testID="dropdown"
+                    color={Colors.white}
+                    name="menu-fold"
+                    size={24}
+                  />
                 )}
               />
               <CustomTextInput
@@ -178,7 +183,7 @@ export const Register: FC<IRegister> = ({navigation}) => {
                 onChange={handleChange('department')}
                 value={values.department}
               />
-              <RegisterButton onPress={handleSubmit}>
+              <RegisterButton onPress={handleSubmit} testID="registerButton">
                 <RegisterText>Register</RegisterText>
               </RegisterButton>
             </Form>
@@ -211,3 +216,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default Register;

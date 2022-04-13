@@ -1,8 +1,6 @@
 import React from 'react';
 import Login from '../src/Screens/Login/Login';
 import {fireEvent, render} from '../__mocks__/testUtils';
-import {loginApi} from '../src/lib/api';
-import axios from 'axios';
 import fetchLogin from '../__mocks__/axiosMock';
 
 describe('Login Screen Tests', () => {
@@ -48,7 +46,7 @@ describe('Login Screen Tests', () => {
     expect(registerButton).toBeTruthy();
   });
 
-  test('should change the inputs and click login button', () => {
+  test('should change the inputs and press login button', () => {
     const {usernameInput, passwordInput, loginButton} = renderScreen();
     fireEvent.changeText(usernameInput, 'testing');
     fireEvent.changeText(passwordInput, 'passwordtest');
@@ -64,12 +62,4 @@ describe('Login Screen Tests', () => {
     const response = await fetchLogin(username, password);
     expect(response.status).toBe(200);
   });
-
-  /* test('try to login with incorrect credentials', async () => {
-    const username = '',
-      password = '';
-    expect(await fetchLogin(username, password)).toThrowError(
-      'Request failed with status code 400',
-    );
-  }); */
 });
