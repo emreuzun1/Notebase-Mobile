@@ -1,6 +1,9 @@
 import React from 'react';
 import Login from '../src/Screens/Login/Login';
 import {fireEvent, render} from '../__mocks__/testUtils';
+import {loginApi} from '../src/lib/api';
+import axios from 'axios';
+import fetchLogin from '../__mocks__/axiosMock';
 
 describe('Login Screen Tests', () => {
   const mockedParams = {
@@ -52,5 +55,21 @@ describe('Login Screen Tests', () => {
     expect(usernameInput.props.value).toEqual('testing');
     expect(passwordInput.props.value).toEqual('passwordtest');
     fireEvent.press(loginButton);
+  });
+
+  test('should login successfully', async () => {
+    const username = 'webtest',
+      password = '123456';
+
+    const response = await fetchLogin(username, password);
+    expect(response.status).toBe(200);
+  });
+
+  test('try to login with incorrect credentials', async () => {
+    const username = '',
+      password = '';
+    expect(await fetchLogin(username, password)).toThrowError(
+      'Request failed with status code 400',
+    );
   });
 });
