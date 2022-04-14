@@ -82,6 +82,7 @@ export const CustomTextInput: FC<TextInput> = props => {
       {(state === Valid || state === Invalid) && (
         <IconContainer>
           <Ionicons
+            testID="icon"
             name={state === Valid ? 'checkmark' : 'close'}
             size={16}
             color={color}

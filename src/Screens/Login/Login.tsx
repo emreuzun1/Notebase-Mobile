@@ -25,7 +25,7 @@ import {State} from '../../Interfaces/State';
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 interface ILogin {
-  navigation: LoginProps | any;
+  navigation: LoginProps | any | undefined;
 }
 
 /**

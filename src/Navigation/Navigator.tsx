@@ -8,8 +8,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
-import {Login} from '../Screens/Login/Login';
-import {Register} from '../Screens/Register/Register';
+import Login from '../Screens/Login/Login';
+import Register from '../Screens/Register/Register';
 import {Home} from '../Screens/Home/Home';
 import {Profile} from '../Screens/Profile/Profile';
 import {Upload} from '../Screens/Upload/Upload';
