@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  act,
-  RenderAPI,
-  waitFor,
-} from '../__mocks__/testUtils';
+import {render, fireEvent, waitFor} from '../__mocks__/testUtils';
 import Register from '../src/Screens/Register/Register';
 import {
   emailValidator,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Login from '../src/Screens/Login/Login';
 import {fireEvent, render} from '../__mocks__/testUtils';
-import fetchLogin from '../__mocks__/axiosMock';
+import {fetchLogin} from '../__mocks__/axiosMock';
 
 describe('Login Screen Tests', () => {
   const mockedParams = {

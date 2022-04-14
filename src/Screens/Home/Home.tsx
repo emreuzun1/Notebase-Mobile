@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, FC} from 'react';
+import React, {useEffect} from 'react';
 import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,7 +28,7 @@ import {Colors} from '../../constants/Colors';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 interface IHome {
-  navigation: NavigationProp;
+  navigation: NavigationProp | any;
 }
 
 const wait = (timeout: number) => {
@@ -40,7 +40,7 @@ const wait = (timeout: number) => {
  * @param navigation To navigate through screens.
  * @returns The JSX of Home Screen.
  */
-export const Home: FC<IHome> = ({navigation}) => {
+const Home = (props: IHome) => {
   const {student} = useAppSelector((state: State) => state.auth);
   const {loading} = useAppSelector((state: State) => state.document);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -68,7 +68,7 @@ export const Home: FC<IHome> = ({navigation}) => {
 
   return (
     <Background>
-      <Header navigation={navigation} searchShown={true} />
+      <Header navigation={props.navigation} searchShown={true} />
       <HomeContainer>
         <View
           style={{
@@ -107,3 +107,5 @@ export const Home: FC<IHome> = ({navigation}) => {
     </Background>
   );
 };
+
+export default Home;

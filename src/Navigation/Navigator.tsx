@@ -10,7 +10,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 
 import Login from '../Screens/Login/Login';
 import Register from '../Screens/Register/Register';
-import {Home} from '../Screens/Home/Home';
+import Home from '../Screens/Home/Home';
 import {Profile} from '../Screens/Profile/Profile';
 import {Upload} from '../Screens/Upload/Upload';
 import {Colors} from '../constants/Colors';
