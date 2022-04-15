@@ -12,14 +12,16 @@ interface IHeader {
   navigation: NavigationProp<RootStackParamList>;
   searchShown?: boolean;
   title?: string;
+  onLogout?: () => void;
 }
 
-export const Header: FC<IHeader> = ({navigation, searchShown}) => {
+export const Header: FC<IHeader> = ({navigation, searchShown, onLogout}) => {
   return (
     <HeaderBar>
       <TouchableOpacity
         onPress={() => {
           if (navigation.getState().index === 0) {
+            onLogout!();
             navigation.navigate('Login');
             return;
           }

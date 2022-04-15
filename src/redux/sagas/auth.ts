@@ -28,7 +28,7 @@ function* userLogin(action: SagaStudentInterface) {
         type: type.USER_LOGIN_SUCCESS,
         payload: {student: {user, token}, status: status},
       });
-      navigation.navigate('Home');
+      RootNavigation.navigate('Home', {});
       Toast.show({
         type: 'success',
         text1: 'Logged in',

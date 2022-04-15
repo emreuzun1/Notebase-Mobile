@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, Platform, Text, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../Navigation/Navigator';
@@ -18,9 +18,7 @@ import {
   RegisterText,
 } from './Login.styles';
 import {Background} from '../../components/Background/Background';
-import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {requestLogin} from '../../redux/actions';
-import {State} from '../../Interfaces/State';
+import {AuthenticationContext} from '../../services/AuthenticationContext';
 
 type LoginProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -34,23 +32,17 @@ interface ILogin {
  * @returns a JSX Element that shows us the Login Screen.
  */
 const Login = (props: ILogin) => {
-  const dispatch = useAppDispatch();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const {loading, status} = useAppSelector((state: State) => state.auth);
-
-  //Dispatches the login function
-  const login = () => {
-    dispatch(requestLogin({username, password}, props.navigation));
-  };
-
-  /*   useMemo(() => {
-    if (status === 200) {
-      navigation.navigate('Home');
-    }
-  }, [dispatch, status]);
- */
+  const {student, loading, onLogin} = useContext(AuthenticationContext);
   // If loading is true, indicator will show up in the screen.
+
+  /* useEffect(() => {
+    if (student) {
+      props.navigation.navigate('Home');
+    }
+  }, [props.navigation, student]); */
+
   if (loading) {
     return (
       <Background style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -104,7 +96,9 @@ const Login = (props: ILogin) => {
             </Text>
           </ForgotText>
         </View>
-        <LoginButton onPress={() => login()} testID="loginButton">
+        <LoginButton
+          onPress={() => onLogin({username, password})}
+          testID="loginButton">
           <LoginText>Login</LoginText>
         </LoginButton>
         <RegisterButton

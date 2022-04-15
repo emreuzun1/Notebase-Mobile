@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,15 +15,14 @@ import {
   PointText,
   WelcomeText,
 } from './Home.styles';
-import {State} from '../../Interfaces/State';
-import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {useAppDispatch} from '../../redux/hooks';
 import {requestDocuments} from '../../redux/actions';
-import {getDocuments} from '../../redux/reducers/selector';
-import {useSelector} from 'react-redux';
 import {Header} from '../../components/Header/Header';
 import {RootStackParamList} from '../../Navigation/Navigator';
 import {Document} from '../../Interfaces/Document';
 import {Colors} from '../../constants/Colors';
+import {AuthenticationContext} from '../../services/AuthenticationContext';
+import {DataContext} from '../../services/DataContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -41,21 +40,14 @@ const wait = (timeout: number) => {
  * @returns The JSX of Home Screen.
  */
 const Home = (props: IHome) => {
-  const {student} = useAppSelector((state: State) => state.auth);
-  const {loading} = useAppSelector((state: State) => state.document);
+  const {student, loading, onLogout} = useContext(AuthenticationContext);
+  const {documents} = useContext(DataContext);
   const [refreshing, setRefreshing] = React.useState(false);
-  const dispatch = useAppDispatch();
-  const data = useSelector(getDocuments);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-
-  // Before render of the screen, gets the document from database.
-  useEffect(() => {
-    dispatch(requestDocuments(student?.token!));
-  }, [dispatch, student]);
 
   // If loading is true, indicator will show up in the screen.
   if (loading) {
@@ -68,7 +60,11 @@ const Home = (props: IHome) => {
 
   return (
     <Background>
-      <Header navigation={props.navigation} searchShown={true} />
+      <Header
+        navigation={props.navigation}
+        searchShown={true}
+        onLogout={onLogout}
+      />
       <HomeContainer>
         <View
           style={{
@@ -79,7 +75,7 @@ const Home = (props: IHome) => {
           }}>
           <HiText>Hi, {student?.user.username}</HiText>
           <View style={{flexDirection: 'row'}}>
-            <PointText>{student.user.point}</PointText>
+            <PointText>{student?.user.point}</PointText>
             <MaterialIcon
               name="star-four-points"
               size={24}
@@ -98,7 +94,7 @@ const Home = (props: IHome) => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             style={{marginTop: 8}}
-            data={data}
+            data={documents}
             keyExtractor={(item: Document) => item.id!}
             renderItem={({item}) => <MaterialCard item={item} />}
           />

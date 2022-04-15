@@ -4,12 +4,18 @@ import Toast from 'react-native-toast-message';
 
 import {Navigation} from './src/Navigation/Navigator';
 import {store} from './src/redux/store';
+import {AuthenticationContextProvider} from './src/services/AuthenticationContext';
+import {DataContextProvider} from './src/services/DataContext';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <Navigation />
-      <Toast />
+      <AuthenticationContextProvider>
+        <DataContextProvider>
+          <Navigation />
+          <Toast />
+        </DataContextProvider>
+      </AuthenticationContextProvider>
     </Provider>
   );
 };

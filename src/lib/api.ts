@@ -39,6 +39,16 @@ export const loginApi = (values: LoginInterface) => {
   });
 };
 
+export const logoutApi = (token: string) => {
+  return axios({
+    method: 'POST',
+    url: 'https://notebase-api.herokuapp.com/api/student/logout/',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
 export const getDocumentsApi = (token: string) => {
   return axios({
     method: 'GET',
