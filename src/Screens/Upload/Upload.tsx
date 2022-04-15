@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC, useCallback, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DocumentPicker, {
@@ -18,26 +18,22 @@ import {
   DescriptionContainer,
   Dropdown,
   InputContainer,
-  PdfViewer,
   PickButton,
   TextInput,
   TitleInput,
   UploadButton,
   UploadText,
 } from './Upload.styles';
-
 import {Colors} from '../../constants/Colors';
-import {Student} from '../../Interfaces/Student';
-import {useAppSelector} from '../../redux/hooks';
-import {State} from '../../Interfaces/State';
 import {Faculties} from '../../constants/Faculty';
 import {createDocumentApi} from '../../lib/api';
 import {Document} from '../../Interfaces/Document';
+import {AuthenticationContext} from '../../services/AuthenticationContext';
 
 type NavigationProp = NativeStackNavigationProp<TabParamList, 'Upload'>;
 
 interface IUpload {
-  navigation: NavigationProp;
+  navigation: NavigationProp | any;
 }
 
 /**
@@ -45,17 +41,17 @@ interface IUpload {
  * @returns the JSX Element of Creation of Document Screen.
  */
 
-export const Upload: FC<IUpload> = ({navigation}) => {
-  const student: Student = useAppSelector((state: State) => state.auth.student);
+const Upload = (props: IUpload) => {
+  const {student} = useContext(AuthenticationContext);
   const [document, setDocument] = useState<Document>({
     title: 'Change Title',
-    university: student.user.university,
-    department: student.user.department,
+    university: '',
+    department: '',
     course: 'Course ID',
     file: undefined,
     description: '',
     date: '',
-    faculty: student.user.faculty,
+    faculty: '',
     user: student.user.id,
   });
   const [isFocus, setIsFocus] = useState(false);
@@ -85,6 +81,7 @@ export const Upload: FC<IUpload> = ({navigation}) => {
       <Background>
         <Container contentContainerStyle={{alignItems: 'center'}}>
           <TitleInput
+            testID="titleInput"
             value={document.title}
             onChangeText={val => setDocument({...document, title: val})}
             maxLength={32}
@@ -92,6 +89,7 @@ export const Upload: FC<IUpload> = ({navigation}) => {
           <InputContainer>
             <Ionicons name="school" size={24} color={Colors.white} />
             <TextInput
+              testID="universityInput"
               value={document.university}
               placeholder="University name"
               onChangeText={text =>
@@ -122,7 +120,12 @@ export const Upload: FC<IUpload> = ({navigation}) => {
               setIsFocus(false);
             }}
             renderLeftIcon={() => (
-              <AntDesign color={Colors.white} name="menu-fold" size={24} />
+              <AntDesign
+                testID="dropdown"
+                color={Colors.white}
+                name="menu-fold"
+                size={24}
+              />
             )}
           />
           <CustomTextInput
@@ -138,7 +141,7 @@ export const Upload: FC<IUpload> = ({navigation}) => {
             value={document.description}
             onChangeText={text => setDocument({...document, description: text})}
           />
-          <PickButton onPress={handleDocumentSelection}>
+          <PickButton testID="pickButton" onPress={handleDocumentSelection}>
             <Ionicons name="cloud-upload" size={32} color={Colors.white} />
           </PickButton>
           <UploadButton
@@ -175,3 +178,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default Upload;

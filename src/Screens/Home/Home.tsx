@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,8 +15,6 @@ import {
   PointText,
   WelcomeText,
 } from './Home.styles';
-import {useAppDispatch} from '../../redux/hooks';
-import {requestDocuments} from '../../redux/actions';
 import {Header} from '../../components/Header/Header';
 import {RootStackParamList} from '../../Navigation/Navigator';
 import {Document} from '../../Interfaces/Document';

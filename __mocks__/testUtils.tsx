@@ -9,13 +9,7 @@ function customRender(
   {store = myStore, ...renderOptions}: any = {},
 ) {
   const Wrapper: FC = ({children}) => {
-    return (
-      <Provider store={store}>
-        <AuthenticationContextProvider>
-          {children}
-        </AuthenticationContextProvider>
-      </Provider>
-    );
+    return <Provider store={store}>{children}</Provider>;
   };
   return render(ui, {wrapper: Wrapper, ...renderOptions});
 }

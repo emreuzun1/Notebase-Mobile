@@ -6,7 +6,9 @@ import {Student} from '../src/Interfaces/Student';
 
 describe('Home Screen Tests', () => {
   const mockedParams = {
-    navigation: '',
+    navigation: {
+      navigate: jest.fn(),
+    },
   };
   let data;
 
@@ -15,6 +17,10 @@ describe('Home Screen Tests', () => {
     const welcomeText = getByLabelText('Welcome Back ✋');
     return {welcomeText};
   };
+
+  /* test('test', () => {
+    const {} = renderScreen();
+  }); */
 
   test('should get notes from the database', async () => {
     const response = await fetchLogin('webtest', '123456');

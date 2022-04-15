@@ -12,7 +12,7 @@ import Login from '../Screens/Login/Login';
 import Register from '../Screens/Register/Register';
 import Home from '../Screens/Home/Home';
 import {Profile} from '../Screens/Profile/Profile';
-import {Upload} from '../Screens/Upload/Upload';
+import Upload from '../Screens/Upload/Upload';
 import {Colors} from '../constants/Colors';
 import {navigationRef} from './RootNavigation';
 import {Document} from '../Interfaces/Document';

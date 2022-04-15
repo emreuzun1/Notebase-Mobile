@@ -35,7 +35,6 @@ const Login = (props: ILogin) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {student, loading, onLogin} = useContext(AuthenticationContext);
-  // If loading is true, indicator will show up in the screen.
 
   /* useEffect(() => {
     if (student) {
@@ -43,6 +42,7 @@ const Login = (props: ILogin) => {
     }
   }, [props.navigation, student]); */
 
+  // If loading is true, indicator will show up in the screen.
   if (loading) {
     return (
       <Background style={{justifyContent: 'center', alignItems: 'center'}}>

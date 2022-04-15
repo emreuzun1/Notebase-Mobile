@@ -14,3 +14,23 @@ export const getData = async token => {
     },
   });
 };
+
+export const createDocumentApi = async (document, token) => {
+  const {user, title, description, university, course, file, date} = document;
+  const formdata = new FormData();
+  formdata.append('user', user);
+  formdata.append('title', title);
+  formdata.append('file', file);
+  formdata.append('course', course);
+  formdata.append('description', description);
+  formdata.append('university', university);
+  formdata.append('date', date);
+  await fetch('https://notebase-api.herokuapp.com/api/document/create/', {
+    method: 'POST',
+    body: formdata,
+    headers: {
+      Authorization: `Token ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  }).then(res => console.log(res));
+};

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -37,8 +37,7 @@ import {
   getStudentDownloadsApi,
   updateStudentPoint,
 } from '../../lib/api';
-import {useAppSelector} from '../../redux/hooks';
-import {State} from '../../Interfaces/State';
+import {AuthenticationContext} from '../../services/AuthenticationContext';
 
 type RouteProps = RouteProp<RootStackParamList, 'Document'>;
 type NavigationProps = NativeStackNavigationProp<
@@ -72,10 +71,7 @@ const Document: FC<IDocument> = ({route, navigation}) => {
 
   const [author, setAuthor] = useState<any>();
   const [downloaded, setDownloaded] = useState<Download>();
-  const student: Student | undefined = useAppSelector(
-    (state: State) => state.auth.student,
-  );
-  const [newStudent, setNewStudent] = useState<Student>(student);
+  const {student} = useContext(AuthenticationContext);
   const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
 
