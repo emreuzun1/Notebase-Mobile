@@ -83,18 +83,6 @@ const Login = (props: ILogin) => {
             icon="lock-closed-outline"
             secureText
           />
-          <ForgotText>
-            <Text
-              style={{
-                fontSize: 14,
-                color: Colors.white,
-                opacity: 0.5,
-                fontStyle: 'italic',
-                fontFamily: 'Raleway-Regular',
-              }}>
-              I forgot my password
-            </Text>
-          </ForgotText>
         </View>
         <LoginButton
           onPress={() => onLogin({username, password})}

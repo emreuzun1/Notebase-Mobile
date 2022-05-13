@@ -22,24 +22,21 @@ interface IMaterial {
 
 export const MaterialCard: FC<IMaterial> = ({item}) => {
   return (
-    <Container onPress={() => RootNavigation.navigate('Document', {item})}>
+    <Container
+      onPress={() =>
+        RootNavigation.navigate('Document', {
+          document: item,
+        })
+      }>
       <View style={{flexDirection: 'row'}}>
         <Ionicons name="document-text" size={52} color={Colors.orange} />
         <View>
           <MaterialName numberOfLines={1}>{item.title}</MaterialName>
           <MaterialCourseID numberOfLines={1}>
-            {item.department} ({item.university})
+            {item.faculty} ({item.university})
           </MaterialCourseID>
         </View>
       </View>
-      <ReviewContainer>
-        <Ionicons name="heart" size={24} color={Colors.purple} />
-        <ReviewText>{item.like_count}</ReviewText>
-        <Ionicons name="heart-dislike" size={24} color={Colors.orange} />
-        <ReviewText>{item.like_count}</ReviewText>
-        <MaterialIcons name="report" size={24} color={Colors.white} />
-        <ReviewText>{item.like_count}</ReviewText>
-      </ReviewContainer>
     </Container>
   );
 };

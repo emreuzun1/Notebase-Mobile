@@ -20,14 +20,16 @@ import DocumentScreen from '../Screens/Document/Document';
 import {Search} from '../Screens/Search/Search';
 import {Settings} from '../Screens/Settings/Settings';
 import {Viewer} from '../Screens/Viewer/Viewer';
+import Edit from '../Screens/Edit';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: NavigatorScreenParams<TabParamList>;
   Search: undefined;
-  Document: Document;
+  Document: {document: Document};
   Upload: undefined;
+  Edit: {document: Document};
   Settings: undefined;
   Viewer: Document;
 };
@@ -122,6 +124,7 @@ const MainNavigator = () => {
       <Screen name="Search" component={Search} />
       <Screen name="Settings" component={Settings} />
       <Screen name="Viewer" component={Viewer} />
+      <Screen name="Edit" component={Edit} />
     </Navigator>
   );
 };

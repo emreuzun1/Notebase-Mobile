@@ -5,7 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {useAppSelector} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
 import {Document} from '../../Interfaces/Document';
 import {MaterialCard} from '../../components/MaterialCard/MaterialCard';
@@ -25,21 +25,24 @@ import {
 import {Colors} from '../../constants/Colors';
 import {Faculties} from '../../constants/Faculty';
 import {updateStudent} from '../../lib/api';
-import {Student} from '../../Interfaces/Student';
+import {requestUser} from '../../redux/actions';
 
 export const Profile = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const {student} = useAppSelector((state: State) => state.auth);
-  const [newStudent, setNewStudent] = useState<Student>(student);
+  const [newStudent, setNewStudent] = useState<any>(student.user);
   const [fullName, setFullName] = useState<string>(
     student.user.first_name + ' ' + student.user.last_name,
   );
   const documents: Document[] = useSelector(getStudentDocuments);
+  const dispatch = useAppDispatch();
 
   const saveStudent = async () => {
     await updateStudent(newStudent).then(res => {
-      console.log(res);
+      if (res.status === 200) {
+        dispatch(requestUser(student.token));
+      }
     });
   };
 
@@ -60,7 +63,10 @@ export const Profile = () => {
         <ProfileWrapper>
           <NameText
             editable={editMode ? true : false}
-            onChangeText={text => setFullName(text)}
+            onChangeText={text => {
+              setFullName(text);
+              setNewStudent({...newStudent, first_name: text});
+            }}
             style={
               editMode
                 ? {
@@ -73,7 +79,7 @@ export const Profile = () => {
             }>
             {fullName}
           </NameText>
-          <SchoolText>{student.user.university}</SchoolText>
+          <SchoolText>{newStudent.university}</SchoolText>
           {editMode ? (
             <Dropdown
               placeholderStyle={styles.placeholderStyle}
@@ -90,22 +96,23 @@ export const Profile = () => {
               valueField="value"
               placeholder={!isFocus ? 'Select faculty' : '...'}
               searchPlaceholder="Search..."
-              value={student.user.faculty}
+              value={newStudent.faculty}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item: any) => {
                 setIsFocus(false);
+                setNewStudent({...newStudent, faculty: item});
               }}
               renderLeftIcon={() => (
                 <AntDesign color={Colors.white} name="menu-fold" size={24} />
               )}
             />
           ) : (
-            <DepartmentText>{student.user.department}</DepartmentText>
+            <DepartmentText>{newStudent.faculty}</DepartmentText>
           )}
 
           <PointContainer>
-            <PointText>{student.user.point}</PointText>
+            <PointText>{newStudent.point}</PointText>
             <MaterialIcon
               name="star-four-points"
               size={24}

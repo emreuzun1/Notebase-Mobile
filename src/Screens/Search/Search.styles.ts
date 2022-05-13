@@ -1,4 +1,4 @@
-import {Text, TextInput, View} from 'react-native';
+import { TextInput, View} from 'react-native';
 import styled from 'styled-components';
 import {Colors} from '../../constants/Colors';
 
@@ -16,7 +16,7 @@ export const InputBar = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
 
-  width: '75%',
+  width: '90%',
   height: 40,
   padding: 10,
   borderWidth: 0.5,

@@ -4,12 +4,8 @@ import Toast from 'react-native-toast-message';
 import * as type from '../types';
 import * as RootNavigation from '../../Navigation/RootNavigation';
 
-import {registerApi, loginApi} from '../../lib/api';
-import {
-  LoginInterface,
-  RegisterValues,
-  Student,
-} from '../../Interfaces/Student';
+import {loginApi, getStudentApi} from '../../lib/api';
+import {LoginInterface, RegisterValues} from '../../Interfaces/Student';
 
 interface SagaStudentInterface {
   type: string;
@@ -18,7 +14,7 @@ interface SagaStudentInterface {
 
 function* userLogin(action: SagaStudentInterface) {
   try {
-    const {username, password, navigation} = action.payload;
+    const {username, password} = action.payload;
     const {
       data: {user, token},
       status,
@@ -49,6 +45,22 @@ function* userLogin(action: SagaStudentInterface) {
   }
 }
 
-const authSaga = [takeLatest(type.USER_LOGIN_REQUEST, userLogin)];
+function* getUser(action: SagaStudentInterface) {
+  try {
+    const {id} = action.payload;
+    console.log(id);
+    const {data, status} = yield call(getStudentApi, id);
+    if (status === 200) {
+      yield put({type: 'STUDENT_REQUEST_SUCCESS', payload: data});
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const authSaga = [
+  takeLatest(type.USER_LOGIN_REQUEST, userLogin),
+  takeLatest('GET_STUDENT_REQUEST', getUser),
+];
 
 export default authSaga;

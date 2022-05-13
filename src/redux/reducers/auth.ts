@@ -3,7 +3,7 @@ import * as type from '../types';
 import produce from 'immer';
 
 interface ActionInterface {
-  payload: {student: Student; status: number};
+  payload: {student: Student; status: number} | any;
   type: string;
   error: string;
 }
@@ -38,6 +38,10 @@ export default (state = initialState, action: ActionInterface) =>
       }
       case type.USER_REGISTER_SUCCESS: {
         draft.loading = false;
+        break;
+      }
+      case 'STUDENT_REQUEST_SUCCESS': {
+        draft.student.user = action.payload;
         break;
       }
       default:

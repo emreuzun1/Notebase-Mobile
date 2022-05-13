@@ -28,6 +28,7 @@ import {Background} from '../../components/Background/Background';
 import {Faculties} from '../../constants/Faculty';
 import {Colors} from '../../constants/Colors';
 import {RegisterValues} from '../../Interfaces/Student';
+import {Header} from '../../components/Header/Header';
 
 type RegisterProps = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -69,6 +70,7 @@ const Register = (props: IRegister) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
+        <Header navigation={props.navigation} />
         <NotebaseIcon source={require('../../assets/notebase.png')} />
         <NewText>
           Welcome to{' '}

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -21,6 +21,9 @@ import {Document} from '../../Interfaces/Document';
 import {Colors} from '../../constants/Colors';
 import {AuthenticationContext} from '../../services/AuthenticationContext';
 import {DataContext} from '../../services/DataContext';
+import {useIsFocused} from '@react-navigation/native';
+import {useAppDispatch} from '../../redux/hooks';
+import {requestDocuments, requestUser} from '../../redux/actions';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -40,12 +43,20 @@ const wait = (timeout: number) => {
 const Home = (props: IHome) => {
   const {student, loading, onLogout} = useContext(AuthenticationContext);
   const {documents} = useContext(DataContext);
+  const isFocused = useIsFocused();
+  const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(requestDocuments(student.token));
+    }
+  }, [isFocused]);
 
   // If loading is true, indicator will show up in the screen.
   if (loading) {

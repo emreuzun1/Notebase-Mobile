@@ -59,8 +59,7 @@ export const getDocumentsApi = (token: string) => {
   });
 };
 
-export const getStudentApi = (id: string | Student) => {
-  console.log(id);
+export const getStudentApi = (id: string) => {
   return axios.get(`https://notebase-api.herokuapp.com/api/student/get/${id}`);
 };
 
@@ -72,8 +71,8 @@ export const getStudentDownloadsApi = (token: string) => {
   });
 };
 
-export const createDocumentApi = async (document: Document, token: string) => {
-  const {user, title, description, university, course, file, date} = document;
+export const createDocumentApi = (document: Document, token: string) => {
+  const {user, title, description, university, course, file} = document;
   const formdata = new FormData();
   formdata.append('user', user);
   formdata.append('title', title);
@@ -81,15 +80,14 @@ export const createDocumentApi = async (document: Document, token: string) => {
   formdata.append('course', course);
   formdata.append('description', description);
   formdata.append('university', university);
-  formdata.append('date', date);
-  await fetch('https://notebase-api.herokuapp.com/api/document/create/', {
+  return fetch('https://notebase-api.herokuapp.com/api/document/create/', {
     method: 'POST',
     body: formdata,
     headers: {
       Authorization: `Token ${token}`,
       'Content-Type': 'multipart/form-data',
     },
-  }).then(res => console.log(res));
+  });
 };
 
 export const getStudentDocuments = (id: string, token: string) => {
@@ -118,9 +116,9 @@ export const createDownloadApi = (
   });
 };
 
-export const updateStudent = (student: Student) => {
+export const updateStudent = (student: any) => {
   const {id, username, faculty, university, first_name, last_name, password} =
-    student.user;
+    student;
 
   const formData = new FormData();
   formData.append('username', username);
@@ -140,17 +138,72 @@ export const updateStudent = (student: Student) => {
 };
 
 export const updateStudentPoint = (student: Student, point: number) => {
-  const {id, username, password} = student.user;
+  const {id} = student.user;
 
   const formData = new FormData();
-  formData.append('username', username);
-  formData.append('password', password);
   formData.append('point', point);
+  console.log('Point', point);
   return fetch(`https://notebase-api.herokuapp.com/api/student/edit/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `Token ${student.token}`,
     },
     body: formData,
+  });
+};
+
+export const updateDownloadStatus = (
+  id: string,
+  token: string,
+  status: boolean,
+) => {
+  let has_liked = false,
+    has_disliked = false;
+  if (status) {
+    has_liked = true;
+    has_disliked = false;
+  } else {
+    has_liked = false;
+    has_disliked = true;
+  }
+  return axios({
+    url: `https://notebase-api.herokuapp.com/api/download/edit/${id}`,
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+    data: {
+      has_liked,
+      has_disliked,
+    },
+  });
+};
+
+export const editDocumentApi = (document: Document, token: string) => {
+  const {title, description, faculty, university} = document;
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('description', description);
+  formData.append('faculty', faculty);
+  formData.append('university', university);
+  return fetch(
+    `https://notebase-api.herokuapp.com/api/document/edit/${document.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      body: formData,
+    },
+  );
+};
+
+export const deleteDocumentApi = (document: Document, token: string) => {
+  return axios({
+    method: 'DELETE',
+    url: `https://notebase-api.herokuapp.com/api/document/delete/${document.id}`,
+    headers: {
+      Authorization: `Token ${token}`,
+    },
   });
 };

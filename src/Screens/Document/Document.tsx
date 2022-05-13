@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useContext, useEffect, useState} from 'react';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useIsFocused} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -33,11 +34,16 @@ import {Colors} from '../../constants/Colors';
 import {Student} from '../../Interfaces/Student';
 import {
   createDownloadApi,
+  deleteDocumentApi,
   getStudentApi,
   getStudentDownloadsApi,
+  updateDownloadStatus,
   updateStudentPoint,
 } from '../../lib/api';
 import {AuthenticationContext} from '../../services/AuthenticationContext';
+import {ActivityIndicator, Alert, View} from 'react-native';
+import {useAppDispatch} from '../../redux/hooks';
+import {requestDocuments, requestUser} from '../../redux/actions';
 
 type RouteProps = RouteProp<RootStackParamList, 'Document'>;
 type NavigationProps = NativeStackNavigationProp<
@@ -61,19 +67,54 @@ interface Download {
 }
 
 /**
- *
  * @param navigation To navigate through screens.
  * @param route To get the passed element from other screen.
  * @returns the JSX Element for Document Screen.
  */
 const Document: FC<IDocument> = ({route, navigation}) => {
-  const document: Readonly<DocumentInterface> = route.params.item;
-
-  const [author, setAuthor] = useState<any>();
+  const dispatch = useAppDispatch();
+  const document: Readonly<DocumentInterface> = route.params.document;
+  const [loading, setLoading] = useState<boolean>(true);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const isFocused = useIsFocused();
+  const [author, setAuthor] = useState<Student>({
+    user: {
+      id: '',
+      username: '',
+      email: '',
+      password: '',
+      last_login: '',
+      is_superuser: false,
+      first_name: '',
+      last_name: '',
+      date_joined: '',
+      is_staff: false,
+      is_active: false,
+      university: '',
+      faculty: '',
+      department: '',
+      point: 0,
+      date: '',
+      groups: [],
+      user_permissions: [],
+    },
+    token: '',
+  });
   const [downloaded, setDownloaded] = useState<Download>();
   const {student} = useContext(AuthenticationContext);
   const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
+
+  //  Runs the function before screens rendered.
+  useEffect(() => {
+    checkForTaken().then(() => getAuthor());
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(requestDocuments(student.token));
+    }
+  }, [isFocused]);
 
   // Checks if the document is already taken or not.
   const checkForTaken = async () => {
@@ -88,22 +129,21 @@ const Document: FC<IDocument> = ({route, navigation}) => {
         }
       });
     });
+    setLoading(false);
   };
 
-  const updatePoint = async () => {
-    await updateStudentPoint(student, student.user.point - 5).then(() => {
-      checkForTaken();
-    });
-  };
-
+  // Takes the course.
   const takeDocument = async () => {
-    if (student.user.point > 5) {
+    if (student.user.point >= 5) {
       await createDownloadApi(
         student.user.id,
         student.token!,
         document.id!,
-      ).then(() => {
-        updatePoint();
+      ).then(async () => {
+        await updateStudentPoint(student, student.user.point - 5).then(() => {
+          dispatch(requestUser(student.user.id));
+          checkForTaken();
+        });
       });
     } else {
       Toast.show({
@@ -115,90 +155,141 @@ const Document: FC<IDocument> = ({route, navigation}) => {
     }
   };
 
+  // Gets the author of the document.
   const getAuthor = async () => {
-    await getStudentApi(document.user).then(res => {
-      setAuthor(res.data);
+    await getStudentApi(document.user.toString()).then(res => {
+      setAuthor({user: res.data});
+      if (res.data.id === student.user.id) {
+        setEditMode(true);
+      }
     });
   };
 
-  //  Runs the function before screens rendered.
-  useEffect(() => {
-    checkForTaken();
-    getAuthor();
-  }, []);
+  //Likes or dislikes the document.
+  const likeDocument = async (status: boolean) => {
+    if (isTaken || editMode) {
+      setDownloaded({...downloaded!, has_liked: status, has_disliked: !status});
+      console.log('HERE');
+      await updateDownloadStatus(downloaded?.id!, student.token, status).then(
+        res => {
+          console.log(res);
+        },
+      );
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'You have to take the course!',
+        position: 'bottom',
+      });
+    }
+  };
+
+  const deleteDocument = async () => {
+    await deleteDocumentApi(document, student.token).then(res => {
+      if (res.status === 204) {
+        navigation.goBack();
+      }
+    });
+  };
+
+  const showAlert = () => {
+    Alert.alert(
+      'Document Deletion',
+      'You are about to delete this document. Are you sure?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {style: 'default', text: "I'm sure", onPress: () => deleteDocument()},
+      ],
+      {cancelable: true},
+    );
+  };
+
+  if (loading) {
+    return (
+      <Background>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator size="large" color={Colors.orange} />
+        </View>
+      </Background>
+    );
+  }
 
   return (
     <SafeView>
       <Background>
-        <Header navigation={navigation} />
-        <Container>
-          <Title>{document.title}</Title>
-          <SubTitle>{document.department}</SubTitle>
-          <PdfViewer
-            source={source}
-            onError={error => {
-              console.log(error);
-            }}
-            maxScale={1}
-            horizontal
-          />
-          <ReviewContainer>
-            <Ionicons
-              name="heart"
-              size={24}
-              color={downloaded?.has_liked ? Colors.purple : Colors.white}
-              onPress={() => console.log('Liked')}
+        <Header
+          navigation={navigation}
+          isEditMode={editMode}
+          editPress={() => navigation.navigate('Edit', {document: document})}
+        />
+        {!loading && (
+          <Container>
+            <Title>{document.title}</Title>
+            <SubTitle>{document.department}</SubTitle>
+            <PdfViewer
+              source={source}
+              onError={error => {
+                console.log(error);
+              }}
+              maxScale={1}
+              horizontal
             />
-            <ReviewText>{document.like_count}</ReviewText>
-            <Ionicons
-              name="heart-dislike"
-              size={24}
-              color={downloaded?.has_disliked ? Colors.orange : Colors.white}
-            />
-            <ReviewText>{document.like_count}</ReviewText>
-            <MaterialIcons
-              name="report"
-              size={24}
-              color={downloaded?.has_reported ? Colors.red : Colors.white}
-            />
-            <ReviewText>{document.like_count}</ReviewText>
-          </ReviewContainer>
-          <AboutContainer>
-            <AboutText>About</AboutText>
-            <AboutDetailContainer>
-              <Ionicons name="school-outline" size={24} color={Colors.white} />
-              <DetailText>{document.university}</DetailText>
-            </AboutDetailContainer>
-            <AboutDetailContainer>
-              <Ionicons name="pencil" size={24} color={Colors.white} />
-              <DetailText>{author?.first_name}</DetailText>
-            </AboutDetailContainer>
-            <AboutDetailContainer>
-              <Ionicons name="time-outline" size={24} color={Colors.white} />
-              <DetailText>{document.date}</DetailText>
-            </AboutDetailContainer>
-          </AboutContainer>
-          <DescriptionContainer>
-            <DescriptionTitle>Description</DescriptionTitle>
-            <DescriptionText>{document.description}</DescriptionText>
-          </DescriptionContainer>
-          {!isTaken ? (
-            <Button onPress={takeDocument}>
-              <ButtonText>Take Document</ButtonText>
-              <ButtonText>{'  '}5</ButtonText>
-              <MaterialCommunityIcon
-                name="star-four-points"
-                size={20}
-                color={Colors.orange}
-                style={{marginLeft: 4}}
-              />
-            </Button>
-          ) : (
-            <Button onPress={() => navigation.navigate('Viewer', document)}>
-              <ButtonText>Open PDF</ButtonText>
-            </Button>
-          )}
-        </Container>
+            <AboutContainer>
+              <AboutText>About</AboutText>
+              <AboutDetailContainer>
+                <Ionicons
+                  name="school-outline"
+                  size={24}
+                  color={Colors.white}
+                />
+                <DetailText>{document.university}</DetailText>
+              </AboutDetailContainer>
+              <AboutDetailContainer>
+                <Ionicons name="pencil" size={24} color={Colors.white} />
+                <DetailText>{author?.user.first_name}</DetailText>
+              </AboutDetailContainer>
+              <AboutDetailContainer>
+                <Ionicons name="time-outline" size={24} color={Colors.white} />
+                <DetailText>{document.date}</DetailText>
+              </AboutDetailContainer>
+            </AboutContainer>
+            <DescriptionContainer>
+              <DescriptionTitle>Description</DescriptionTitle>
+              <DescriptionText>{document.description}</DescriptionText>
+            </DescriptionContainer>
+            {!isTaken && !editMode ? (
+              <Button onPress={takeDocument}>
+                <ButtonText>Take Document</ButtonText>
+                <ButtonText>{'  '}5</ButtonText>
+                <MaterialCommunityIcon
+                  name="star-four-points"
+                  size={20}
+                  color={Colors.orange}
+                  style={{marginLeft: 4}}
+                />
+              </Button>
+            ) : (
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <Button onPress={() => navigation.navigate('Viewer', document)}>
+                  <ButtonText>Open PDF</ButtonText>
+                </Button>
+                {editMode && (
+                  <Button
+                    onPress={() => showAlert()}
+                    style={{marginLeft: 12, backgroundColor: Colors.darkRed}}>
+                    <ButtonText>Delete PDF</ButtonText>
+                  </Button>
+                )}
+              </View>
+            )}
+          </Container>
+        )}
       </Background>
     </SafeView>
   );

@@ -2,7 +2,6 @@
 import React, {FC, useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Modal} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 
 import {Background} from '../../components/Background/Background';
@@ -10,7 +9,7 @@ import {Header} from '../../components/Header/Header';
 import {RootStackParamList} from '../../Navigation/Navigator';
 import {Input, InputBar, InputContainer} from './Search.styles';
 import {Colors} from '../../constants/Colors';
-import {FlatList, Text} from 'react-native';
+import {FlatList} from 'react-native';
 import {useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
 import {Document} from '../../Interfaces/Document';
@@ -23,25 +22,22 @@ interface ISearch {
 }
 
 export const Search: FC<ISearch> = ({navigation}) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
   const {documents} = useAppSelector((state: State) => state.document);
   const [data, setData] = useState<Document[]>(documents);
   const [searchInput, setSearchInput] = useState<string>('');
 
   const searchDocuments = () => {
+    console.log(searchInput === '');
     const filteredData = documents.filter((document: Document) => {
-      if (document.title.includes(searchInput)) {
-        return true;
-      }
-      if (document.description.includes(searchInput)) {
+      if (
+        document.title.includes(searchInput) ||
+        document.faculty.includes(searchInput) ||
+        document.description.includes(searchInput)
+      ) {
         return true;
       }
     });
     setData(filteredData);
-  };
-
-  const hideModal = () => {
-    setIsVisible(false);
   };
 
   return (
@@ -55,20 +51,11 @@ export const Search: FC<ISearch> = ({navigation}) => {
             placeholderTextColor={Colors.white}
             value={searchInput}
             onChangeText={text => {
-              setSearchInput(text);
               searchDocuments();
+              setSearchInput(text);
             }}
           />
         </InputBar>
-        <Ionicons
-          name="filter"
-          size={24}
-          color="white"
-          style={{marginLeft: 14}}
-          onPress={() => {
-            setIsVisible(true);
-          }}
-        />
       </InputContainer>
       <FlatList
         style={{marginTop: 8}}
@@ -76,13 +63,6 @@ export const Search: FC<ISearch> = ({navigation}) => {
         keyExtractor={(item: Document) => item.id!}
         renderItem={({item}) => <MaterialCard item={item} />}
       />
-      <Modal
-        visible={isVisible}
-        onDismiss={hideModal}
-        contentContainerStyle={styles.modal}>
-        <Text>Hi there</Text>
-        <Input style={{borderColor: Colors.black}} />
-      </Modal>
     </Background>
   );
 };
@@ -91,5 +71,25 @@ export const styles = StyleSheet.create({
   modal: {
     backgroundColor: Colors.white,
     padding: 24,
+  },
+  placeholderStyle: {
+    fontSize: 18,
+    color: Colors.black,
+    fontFamily: 'Raleway',
+    marginLeft: 8,
+  },
+  selectedTextStyle: {
+    fontSize: 18,
+    color: Colors.black,
+    marginLeft: 8,
+    fontFamily: 'Raleway',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
