@@ -23,7 +23,7 @@ import {AuthenticationContext} from '../../services/AuthenticationContext';
 import {DataContext} from '../../services/DataContext';
 import {useIsFocused} from '@react-navigation/native';
 import {useAppDispatch} from '../../redux/hooks';
-import {requestDocuments, requestUser} from '../../redux/actions';
+import {requestDocuments} from '../../redux/actions';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -56,7 +56,7 @@ const Home = (props: IHome) => {
     if (isFocused) {
       dispatch(requestDocuments(student.token));
     }
-  }, [isFocused]);
+  }, [dispatch, isFocused, student.token]);
 
   // If loading is true, indicator will show up in the screen.
   if (loading) {

@@ -7,8 +7,8 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
-import {Formik} from 'formik';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {RootStackParamList} from '../../Navigation/Navigator';
@@ -28,6 +28,7 @@ import {
   emailValidator,
   passwordValidator,
   usernameValidator,
+  checkForBlank,
 } from '../../utils/Regex';
 import {register} from '../../lib/api';
 import {Background} from '../../components/Background/Background';
@@ -63,12 +64,31 @@ const Register = (props: IRegister) => {
 
   // Register Function to dispatch values.
   const registerF = async () => {
+    if (
+      !usernameValidator(initialValues.username) ||
+      !emailValidator(initialValues.email) ||
+      !passwordValidator(initialValues.password) ||
+      initialValues.password !== initialValues.confirmPassword ||
+      !checkForBlank(initialValues.faculty) ||
+      !checkForBlank(initialValues.university) ||
+      !checkForBlank(initialValues.department) ||
+      !checkForBlank(initialValues.first_name) ||
+      !checkForBlank(initialValues.last_name)
+    ) {
+      Alert.alert(
+        'Invalid Inputs',
+        'Check your credentials.',
+        [{text: 'Close alert', style: 'cancel'}],
+        {cancelable: true},
+      );
+      return;
+    }
     setLoading(true);
-    console.log(initialValues);
     let response = await register(initialValues);
-    let json = await response.json();
-    props.navigation.goBack();
-    setLoading(false);
+    await response.json().then(() => {
+      props.navigation.goBack();
+      setLoading(false);
+    });
   };
 
   if (loading) {
@@ -158,7 +178,7 @@ const Register = (props: IRegister) => {
             secureText
             placeholder="Confirm Password"
             icon="lock-closed-outline"
-            validator={passwordValidator}
+            validator={(text: string) => initialValues.password === text}
             onChange={text =>
               setInitialValues({...initialValues, confirmPassword: text})
             }

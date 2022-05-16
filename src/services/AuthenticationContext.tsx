@@ -1,4 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
+import {Alert} from 'react-native';
+
+import * as RootNavigation from '../Navigation/RootNavigation';
 import {State} from '../Interfaces/State';
 import {LoginInterface, Student} from '../Interfaces/Student';
 import {logoutApi} from '../lib/api';
@@ -75,8 +78,24 @@ export const AuthenticationContextProvider = ({children}: any) => {
   };
 
   const onLogout = async () => {
-    await persistor.purge();
-    await logoutApi(student.token);
+    Alert.alert(
+      'Sign Out',
+      'You are about to sign out. Are you sure?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {
+          style: 'default',
+          text: "I'm sure",
+          onPress: async () => {
+            await persistor.purge().then(async () => {
+              await logoutApi(student.token);
+              RootNavigation.navigate('Login', {});
+            });
+          },
+        },
+      ],
+      {cancelable: true},
+    );
   };
 
   useEffect(() => {

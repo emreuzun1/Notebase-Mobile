@@ -37,15 +37,15 @@ import {Document} from '../../Interfaces/Document';
 import {AuthenticationContext} from '../../services/AuthenticationContext';
 import {useAppDispatch} from '../../redux/hooks';
 import {requestUser} from '../../redux/actions';
+import {checkForBlank} from '../../utils/Regex';
 
 type NavigationProp = NativeStackNavigationProp<TabParamList, 'Upload'>;
 
 interface IUpload {
-  navigation: NavigationProps | any;
+  navigation: NavigationProp | any;
 }
 
 /**
- *
  * @returns the JSX Element of Creation of Document Screen.
  */
 const Upload: FC<IUpload> = ({navigation}) => {
@@ -76,6 +76,22 @@ const Upload: FC<IUpload> = ({navigation}) => {
   };
 
   const createDocument = async () => {
+    if (
+      !checkForBlank(document.title) ||
+      !checkForBlank(document.course) ||
+      !checkForBlank(document.faculty) ||
+      !checkForBlank(document.description) ||
+      !checkForBlank(document.university) ||
+      document.file === undefined
+    ) {
+      Alert.alert(
+        'Empty Inputs',
+        'Check your inputs.',
+        [{text: 'Close alert', style: 'cancel'}],
+        {cancelable: true},
+      );
+      return;
+    }
     setLoading(true);
     /* 
     const formData = new FormData();

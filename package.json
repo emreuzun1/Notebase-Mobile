@@ -19,7 +19,6 @@
     "@redux-devtools/extension": "^3.2.2",
     "axios": "^0.26.1",
     "fbjs": "^3.0.4",
-    "formik": "^2.2.9",
     "immer": "^9.0.12",
     "react": "17.0.2",
     "react-native": "0.67.2",

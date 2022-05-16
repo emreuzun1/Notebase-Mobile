@@ -7,7 +7,6 @@ import {RootStackParamList} from '../../Navigation/Navigator';
 import {CustomTextInput} from '../../components/CustomTextInput/CustomTextInput';
 import {Colors} from '../../constants/Colors';
 import {
-  ForgotText,
   KeyboardAvoiding,
   LoginButton,
   LoginInfoText,
@@ -34,7 +33,7 @@ interface ILogin {
 const Login = (props: ILogin) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const {student, loading, onLogin} = useContext(AuthenticationContext);
+  const {loading, onLogin} = useContext(AuthenticationContext);
 
   /* useEffect(() => {
     if (student) {

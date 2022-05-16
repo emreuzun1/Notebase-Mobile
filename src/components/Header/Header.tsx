@@ -31,7 +31,6 @@ export const Header: FC<IHeader> = ({
         onPress={() => {
           if (navigation.getState().index === 0) {
             onLogout!();
-            navigation.navigate('Login');
             return;
           }
           navigation.goBack();

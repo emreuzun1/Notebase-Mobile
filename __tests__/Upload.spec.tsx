@@ -18,9 +18,6 @@ describe('Upload Screen Tests', () => {
     const universityInput = getByTestId('universityInput');
     const courseInput = getByTestId('courseInput');
     const facultyInput = getByTestId('dropdown');
-    const departmentInput = getByPlaceholderText(
-      'Write the department that note is belong',
-    );
     const descriptionInput = getByPlaceholderText('Description');
     const pickButton = getByTestId('pickButton');
     return {
@@ -28,7 +25,6 @@ describe('Upload Screen Tests', () => {
       universityInput,
       courseInput,
       facultyInput,
-      departmentInput,
       descriptionInput,
       pickButton,
     };
@@ -39,7 +35,7 @@ describe('Upload Screen Tests', () => {
       titleInput,
       universityInput,
       facultyInput,
-      departmentInput,
+      courseInput,
       descriptionInput,
       pickButton,
     } = renderScreen();
@@ -47,7 +43,7 @@ describe('Upload Screen Tests', () => {
     expect(titleInput).toBeTruthy();
     expect(universityInput).toBeTruthy();
     expect(facultyInput).toBeTruthy();
-    expect(departmentInput).toBeTruthy();
+    expect(courseInput).toBeTruthy();
     expect(descriptionInput).toBeTruthy();
     expect(pickButton).toBeTruthy();
   });

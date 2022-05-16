@@ -4,7 +4,6 @@ import React, {FC, useContext, useEffect, useState} from 'react';
 import {RouteProp, useIsFocused} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 
@@ -21,8 +20,6 @@ import {
   DescriptionTitle,
   DetailText,
   PdfViewer,
-  ReviewContainer,
-  ReviewText,
   SafeView,
   SubTitle,
   Title,
@@ -38,17 +35,12 @@ import {
   getDocumentByIdApi,
   getStudentApi,
   getStudentDownloadsApi,
-  updateDownloadStatus,
   updateStudentPoint,
 } from '../../lib/api';
 import {AuthenticationContext} from '../../services/AuthenticationContext';
 import {ActivityIndicator, Alert, View} from 'react-native';
 import {useAppDispatch} from '../../redux/hooks';
-import {
-  requestDocumentById,
-  requestDocuments,
-  requestUser,
-} from '../../redux/actions';
+import {requestUser} from '../../redux/actions';
 
 type RouteProps = RouteProp<RootStackParamList, 'Document'>;
 type NavigationProps = NativeStackNavigationProp<
@@ -107,7 +99,6 @@ const Document: FC<IDocument> = ({route, navigation}) => {
     },
     token: '',
   });
-  const [downloaded, setDownloaded] = useState<Download>();
   const {student} = useContext(AuthenticationContext);
   const [isTaken, setIsTaken] = useState<boolean>(false);
   const source = {uri: `${document.file}`};
@@ -138,7 +129,6 @@ const Document: FC<IDocument> = ({route, navigation}) => {
           download.user === student.user.id
         ) {
           setIsTaken(true);
-          setDownloaded(download);
         }
       });
     });
@@ -171,31 +161,11 @@ const Document: FC<IDocument> = ({route, navigation}) => {
   // Gets the author of the document.
   const getAuthor = async () => {
     await getStudentApi(document.user.toString()).then(res => {
-      setAuthor({user: res.data});
+      setAuthor({user: res.data, token: ''});
       if (res.data.id === student.user.id) {
         setEditMode(true);
       }
     });
-  };
-
-  //Likes or dislikes the document.
-  const likeDocument = async (status: boolean) => {
-    if (isTaken || editMode) {
-      setDownloaded({...downloaded!, has_liked: status, has_disliked: !status});
-      console.log('HERE');
-      await updateDownloadStatus(downloaded?.id!, student.token, status).then(
-        res => {
-          console.log(res);
-        },
-      );
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'You have to take the course!',
-        position: 'bottom',
-      });
-    }
   };
 
   const deleteDocument = async () => {

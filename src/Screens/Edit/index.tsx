@@ -24,6 +24,7 @@ import {Faculties} from '../../constants/Faculty';
 import {useAppSelector} from '../../redux/hooks';
 import {State} from '../../Interfaces/State';
 import {editDocumentApi} from '../../lib/api';
+import {Header} from '../../components/Header/Header';
 
 type RouteProps = RouteProp<RootStackParamList, 'Edit'>;
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Edit'>;
@@ -57,6 +58,7 @@ const Edit: FC<IEdit> = ({route, navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <Background>
+        <Header navigation={navigation} />
         <Container contentContainerStyle={{alignItems: 'center'}}>
           <TitleInput
             testID="titleInput"

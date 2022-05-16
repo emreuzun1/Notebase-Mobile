@@ -21,3 +21,7 @@ export const emailValidator = (input: string) => {
   //const regex = "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
   return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(input);
 }
+
+export const checkForBlank = (input: string) => {
+  return /^(?!\s*$).+/.test(input);
+}
