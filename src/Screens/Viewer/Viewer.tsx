@@ -19,7 +19,6 @@ export const Viewer: FC<IViewer> = ({route, navigation}) => {
   const document = route.params;
   return (
     <Background>
-      <Header navigation={navigation} />
       <PdfViewer source={{uri: `${document.file}`}} />
     </Background>
   );

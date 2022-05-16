@@ -35,6 +35,7 @@ import {Student} from '../../Interfaces/Student';
 import {
   createDownloadApi,
   deleteDocumentApi,
+  getDocumentByIdApi,
   getStudentApi,
   getStudentDownloadsApi,
   updateDownloadStatus,
@@ -43,7 +44,11 @@ import {
 import {AuthenticationContext} from '../../services/AuthenticationContext';
 import {ActivityIndicator, Alert, View} from 'react-native';
 import {useAppDispatch} from '../../redux/hooks';
-import {requestDocuments, requestUser} from '../../redux/actions';
+import {
+  requestDocumentById,
+  requestDocuments,
+  requestUser,
+} from '../../redux/actions';
 
 type RouteProps = RouteProp<RootStackParamList, 'Document'>;
 type NavigationProps = NativeStackNavigationProp<
@@ -73,7 +78,9 @@ interface Download {
  */
 const Document: FC<IDocument> = ({route, navigation}) => {
   const dispatch = useAppDispatch();
-  const document: Readonly<DocumentInterface> = route.params.document;
+  const [document, setDocument] = useState<DocumentInterface>(
+    route.params.document,
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const isFocused = useIsFocused();
@@ -112,9 +119,15 @@ const Document: FC<IDocument> = ({route, navigation}) => {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(requestDocuments(student.token));
+      getDocumentById();
     }
   }, [isFocused]);
+
+  const getDocumentById = async () => {
+    let response = await getDocumentByIdApi(document.id!, student.token);
+    const json = await response.json();
+    setDocument(json);
+  };
 
   // Checks if the document is already taken or not.
   const checkForTaken = async () => {

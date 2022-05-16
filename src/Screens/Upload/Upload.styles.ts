@@ -36,7 +36,7 @@ export const TextInput = styled(RNTextInput)({
   fontSize: 18,
   color: Colors.white,
   padding: 4,
-  borderBottomWidth: 0.3,
+  borderBottomWidth: 1,
   borderColor: Colors.white,
   marginLeft: 8,
 });
@@ -50,10 +50,10 @@ export const Dropdown = styled(RNDropdown)({
 });
 
 export const DescriptionContainer = styled(RNTextInput)({
-  width: SCREEN_WIDTH / 1.1,
+  width: SCREEN_WIDTH / 1.2,
   height: 100,
   borderRadius: 12,
-  borderWidth: 0.5,
+  borderWidth: 1,
   borderColor: Colors.white,
   marginTop: 12,
   marginBottom: 24,
@@ -63,11 +63,11 @@ export const DescriptionContainer = styled(RNTextInput)({
 });
 
 export const PickButton = styled(TouchableOpacity)({
-  width: SCREEN_WIDTH / 1.1,
+  width: SCREEN_WIDTH / 1.2,
   height: 125,
   marginTop: 12,
   borderRadius: 12,
-  borderWidth: 0.5,
+  borderWidth: 1,
   borderColor: Colors.white,
   alignItems: 'center',
   justifyContent: 'center',
@@ -88,7 +88,7 @@ export const UploadButton = styled(TouchableOpacity)({
   backgroundColor: Colors.orange,
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: 12,
+  marginTop: 48,
 });
 
 export const UploadText = styled(Text)({

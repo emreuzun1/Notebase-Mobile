@@ -24,7 +24,20 @@ export const register = (values: RegisterValues) => {
   formdata.append('faculty', faculty);
   return fetch('https://notebase-api.herokuapp.com/api/student/register/', {
     method: 'POST',
-    body: formdata,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username,
+      email,
+      password,
+      first_name,
+      last_name,
+      university,
+      department,
+      faculty,
+    }),
   });
 };
 
@@ -202,6 +215,15 @@ export const deleteDocumentApi = (document: Document, token: string) => {
   return axios({
     method: 'DELETE',
     url: `https://notebase-api.herokuapp.com/api/document/delete/${document.id}`,
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const getDocumentByIdApi = (id: string, token: string) => {
+  return fetch(`https://notebase-api.herokuapp.com/api/document/get/${id}`, {
+    method: 'GET',
     headers: {
       Authorization: `Token ${token}`,
     },

@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Platform, Text, View, StyleSheet} from 'react-native';
+import {
+  Platform,
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import {Formik} from 'formik';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -41,8 +47,9 @@ interface IRegister {
  * @returns a JSX Element that shows us the Register Screen.
  */
 const Register = (props: IRegister) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState(false);
-  const initialValues: RegisterValues = {
+  const [initialValues, setInitialValues] = useState<RegisterValues>({
     first_name: '',
     last_name: '',
     email: '',
@@ -52,16 +59,25 @@ const Register = (props: IRegister) => {
     department: '',
     faculty: '',
     university: '',
-  };
+  });
 
   // Register Function to dispatch values.
-  const registerF = async (values: RegisterValues) => {
-    await register(values).then(res => {
-      if (res.status === 200) {
-        props.navigation.goBack();
-      }
-    });
+  const registerF = async () => {
+    setLoading(true);
+    console.log(initialValues);
+    let response = await register(initialValues);
+    let json = await response.json();
+    props.navigation.goBack();
+    setLoading(false);
   };
+
+  if (loading) {
+    return (
+      <Background style={{justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="white" />
+      </Background>
+    );
+  }
 
   return (
     <KeyboardAvoiding behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -81,116 +97,124 @@ const Register = (props: IRegister) => {
         <RegisterInfoText>
           Please fill the credentials to sign up
         </RegisterInfoText>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={values => registerF(values)}>
-          {({handleChange, handleSubmit, values, setFieldValue}) => (
-            <Form
-              contentContainerStyle={{
-                alignItems: 'center',
-                paddingLeft: 12,
-                paddingRight: 12,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  width: '100%',
-                }}>
-                <CustomTextInput
-                  containerStyle={{width: '45%'}}
-                  placeholder="First Name"
-                  icon="text"
-                  value={values.first_name}
-                  onChange={handleChange('first_name')}
-                />
-                <CustomTextInput
-                  containerStyle={{width: '45%'}}
-                  placeholder="Last Name"
-                  icon="text"
-                  value={values.last_name}
-                  onChange={handleChange('last_name')}
-                />
-              </View>
-              <CustomTextInput
-                placeholder="Username"
-                icon="person-outline"
-                onChange={handleChange('username')}
-                value={values.username}
-                validator={usernameValidator}
+        <Form
+          contentContainerStyle={{
+            alignItems: 'center',
+            paddingLeft: 12,
+            paddingRight: 12,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              width: '100%',
+            }}>
+            <CustomTextInput
+              containerStyle={{width: '47%'}}
+              placeholder="First Name"
+              icon="text"
+              value={initialValues.first_name}
+              onChange={text =>
+                setInitialValues({...initialValues, first_name: text})
+              }
+            />
+            <CustomTextInput
+              containerStyle={{width: '47%'}}
+              placeholder="Last Name"
+              icon="text"
+              value={initialValues.last_name}
+              onChange={text =>
+                setInitialValues({...initialValues, last_name: text})
+              }
+            />
+          </View>
+          <CustomTextInput
+            placeholder="Username"
+            icon="person-outline"
+            onChange={text =>
+              setInitialValues({...initialValues, username: text})
+            }
+            value={initialValues.username}
+            validator={usernameValidator}
+          />
+          <CustomTextInput
+            placeholder="Mail"
+            icon="mail-outline"
+            validator={emailValidator}
+            onChange={text => setInitialValues({...initialValues, email: text})}
+            value={initialValues.email}
+          />
+          <CustomTextInput
+            placeholder="Password"
+            validator={passwordValidator}
+            icon="lock-closed-outline"
+            onChange={text =>
+              setInitialValues({...initialValues, password: text})
+            }
+            value={initialValues.password}
+            secureText
+          />
+          <CustomTextInput
+            secureText
+            placeholder="Confirm Password"
+            icon="lock-closed-outline"
+            validator={passwordValidator}
+            onChange={text =>
+              setInitialValues({...initialValues, confirmPassword: text})
+            }
+            value={initialValues.confirmPassword}
+          />
+          <CustomTextInput
+            placeholder="University"
+            icon="school-outline"
+            onChange={text =>
+              setInitialValues({...initialValues, university: text})
+            }
+            value={initialValues.university}
+          />
+          <Dropdown
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={[
+              styles.selectedTextStyle,
+              isFocus && {color: Colors.black},
+            ]}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={Faculties}
+            search
+            maxHeight={200}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Select faculty' : '...'}
+            searchPlaceholder="Search..."
+            value="faculty"
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={(item: any) => {
+              setInitialValues({...initialValues, faculty: item.value});
+              setIsFocus(false);
+            }}
+            renderLeftIcon={() => (
+              <AntDesign
+                testID="dropdown"
+                color={Colors.white}
+                name="menu-fold"
+                size={24}
               />
-              <CustomTextInput
-                placeholder="Mail"
-                icon="mail-outline"
-                validator={emailValidator}
-                onChange={handleChange('email')}
-                value={values.email}
-              />
-              <CustomTextInput
-                placeholder="Password"
-                validator={passwordValidator}
-                icon="lock-closed-outline"
-                onChange={handleChange('password')}
-                value={values.password}
-                secureText
-              />
-              <CustomTextInput
-                secureText
-                placeholder="Confirm Password"
-                icon="lock-closed-outline"
-                validator={passwordValidator}
-                onChange={handleChange('confirmPassword')}
-                value={values.confirmPassword}
-              />
-              <CustomTextInput
-                placeholder="University"
-                icon="school-outline"
-                onChange={handleChange('university')}
-                value={values.university}
-              />
-              <Dropdown
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={[
-                  styles.selectedTextStyle,
-                  isFocus && {color: Colors.black},
-                ]}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={Faculties}
-                search
-                maxHeight={200}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Select faculty' : '...'}
-                searchPlaceholder="Search..."
-                value="faculty"
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={(item: any) => {
-                  setFieldValue('faculty', item);
-                  setIsFocus(false);
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    testID="dropdown"
-                    color={Colors.white}
-                    name="menu-fold"
-                    size={24}
-                  />
-                )}
-              />
-              <CustomTextInput
-                placeholder="Department"
-                icon="school-outline"
-                onChange={handleChange('department')}
-                value={values.department}
-              />
-              <RegisterButton onPress={handleSubmit} testID="registerButton">
-                <RegisterText>Register</RegisterText>
-              </RegisterButton>
-            </Form>
-          )}
-        </Formik>
+            )}
+          />
+          <CustomTextInput
+            placeholder="Department"
+            icon="school-outline"
+            onChange={text =>
+              setInitialValues({...initialValues, department: text})
+            }
+            value={initialValues.department}
+          />
+          <RegisterButton onPress={() => registerF()} testID="registerButton">
+            <RegisterText>Register</RegisterText>
+          </RegisterButton>
+        </Form>
       </Background>
     </KeyboardAvoiding>
   );

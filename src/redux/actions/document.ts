@@ -8,3 +8,13 @@ export function requestDocuments(token: string) {
     },
   };
 }
+
+export function requestDocumentById(id: string, token: string) {
+  return {
+    type: 'GET_DOCUMENT_REQUEST',
+    payload: {
+      id,
+      token,
+    },
+  };
+}

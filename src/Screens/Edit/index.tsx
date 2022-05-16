@@ -40,7 +40,6 @@ const Edit: FC<IEdit> = ({route, navigation}) => {
 
   const editDocument = async () => {
     await editDocumentApi(document, student.token).then(res => {
-      console.log(res);
       if (res.status === 200) {
         Toast.show({
           type: 'success',

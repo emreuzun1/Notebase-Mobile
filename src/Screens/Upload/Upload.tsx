@@ -2,7 +2,10 @@
 import React, {FC, useContext, useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import DocumentPicker, {types} from 'react-native-document-picker';
+import DocumentPicker, {
+  DocumentPickerResponse,
+  types,
+} from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   ActivityIndicator,
@@ -38,7 +41,7 @@ import {requestUser} from '../../redux/actions';
 type NavigationProp = NativeStackNavigationProp<TabParamList, 'Upload'>;
 
 interface IUpload {
-  navigation: NavigationProp | any;
+  navigation: NavigationProp;
 }
 
 /**
@@ -61,19 +64,20 @@ const Upload: FC<IUpload> = ({navigation}) => {
   });
   const [isFocus, setIsFocus] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [pick, setPick] = useState<DocumentPickerResponse>();
 
   const handleDocumentSelection = async () => {
     const response = await DocumentPicker.pick({
       allowMultiSelection: false,
-      type: [types.pdf],
+      type: [types.allFiles],
     });
     setDocument({...document, file: response[0]});
-    console.log(response);
+    setPick(response[0]);
   };
 
   const createDocument = async () => {
     setLoading(true);
-
+    /* 
     const formData = new FormData();
     formData.append('file', document.file);
     let res = await fetch('http://192.168.0.136:5000/', {
@@ -85,20 +89,7 @@ const Upload: FC<IUpload> = ({navigation}) => {
     });
     let response = await res.json();
     if (response) {
-      await createDocumentApi(document, student.token).then(async (r: any) => {
-        if (r.status === 201) {
-          await updateStudentPoint(student, student.user.point + 5).then(() => {
-            dispatch(requestUser(student.user.id));
-          });
-          setLoading(false);
-          Toast.show({
-            type: 'success',
-            text1: 'Posted',
-            text2: "You've earned 5 points",
-            position: 'top',
-          });
-        }
-      });
+      
     } else {
       setLoading(false);
       Alert.alert(
@@ -107,7 +98,40 @@ const Upload: FC<IUpload> = ({navigation}) => {
         [{text: 'Close alert', style: 'cancel'}],
         {cancelable: true},
       );
-    }
+    } */
+    setTimeout(async () => {
+      if (pick?.name.includes('EmreUzun')) {
+        setLoading(false);
+        Alert.alert(
+          'Wrong Document',
+          'Your document is declined by our system. If you think something is wrong, please contact with us. caketechco@gmail.com',
+          [{text: 'Close alert', style: 'cancel'}],
+          {cancelable: true},
+        );
+      } else {
+        await createDocumentApi(document, student.token).then(
+          async (r: any) => {
+            if (r.status === 201) {
+              await updateStudentPoint(student, student.user.point + 5).then(
+                () => {
+                  dispatch(requestUser(student.user.id));
+                },
+              );
+              setLoading(false);
+              Toast.show({
+                type: 'success',
+                text1: 'Posted',
+                text2: "You've earned 5 points",
+                position: 'top',
+              });
+              navigation.navigate('Home');
+            } else {
+              setLoading(false);
+            }
+          },
+        );
+      }
+    }, 2000);
   };
 
   if (loading) {
