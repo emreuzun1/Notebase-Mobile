@@ -41,7 +41,7 @@ import {requestUser} from '../../redux/actions';
 type NavigationProp = NativeStackNavigationProp<TabParamList, 'Upload'>;
 
 interface IUpload {
-  navigation: NavigationProp;
+  navigation: NavigationProps | any;
 }
 
 /**
@@ -169,7 +169,7 @@ const Upload: FC<IUpload> = ({navigation}) => {
           <InputContainer style={{marginTop: 32}}>
             <Ionicons name="school" size={24} color={Colors.white} />
             <TextInput
-              testID="universityInput"
+              testID="courseInput"
               value={document.course}
               placeholder="Course ID"
               placeholderTextColor={Colors.white}
