@@ -16,7 +16,7 @@ describe('Upload Screen Tests', () => {
 
     const titleInput = getByTestId('titleInput');
     const universityInput = getByTestId('universityInput');
-    const universityInput = getByTestId('courseInput');
+    const courseInput = getByTestId('courseInput');
     const facultyInput = getByTestId('dropdown');
     const departmentInput = getByPlaceholderText(
       'Write the department that note is belong',
@@ -26,6 +26,7 @@ describe('Upload Screen Tests', () => {
     return {
       titleInput,
       universityInput,
+      courseInput,
       facultyInput,
       departmentInput,
       descriptionInput,
